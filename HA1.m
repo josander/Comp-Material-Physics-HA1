@@ -22,6 +22,10 @@ C = [1, 2, 2, 1]';
 Q = getQ(alpha);
 
 % Construct the matrix F
+F = getF(Q)
+
+%%
+
 F = zeros(4, 4);
 sum = 0;
 
