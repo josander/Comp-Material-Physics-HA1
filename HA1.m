@@ -14,7 +14,7 @@ F = zeros(4, 4);
 alpha = [0.297104, 1.236745, 5.749982, 38.216677];
 
 % Initialisation of C
-C = [1, 2, 2, 1]';
+C = [1, .5, .5, 1]';
 
 % Construct the matrices h, S and C
 h = getH(alpha);
@@ -26,34 +26,43 @@ energyDiff = 1;
 Eold = 0;
 
 % Normalize C via overlap maxtrix
-C = normC(C, S );
 
-%while energyDiff > 10^(-5) % [eV]
- %%   
+C = normC(C, S);
+
+
+while energyDiff > 10^(-5) % [eV]
+
 
     % Construct the matrix F
     F = getF(h, C, Q);
 
     % Solve the generalised eigenvalue problem
-    %Eigen = (F*C)\(S*C) % [4 x 4]x[4 x 1]\[4 x 4]x[4 x 1] = [4 x 1]\[4 x 1]
-    [A B]= eig(F,S);
+
+    [A B]= eig(F, S);
+
+
     % Find the lowest real eigenvalue
     [x y] = find(B == min(diag(B)));
 
-    C = A(:,x); 
+    % New C-array
+    C = A(:,y); 
 
     % Normalize C via overlap maxtrix
-    %C = normC(C, S );
-    C = C/norm(C);
-    % Get the ground state energy of the state
+
+    C = normC(C, S);
+
+    % Get the energy of the state
     E  = getEG(h, C, Q);
     
-   
+
     % Calculate the new energy difference
     energyDiff = abs(Eold - E);
     Eold = E;
 
-%% end
+
+    pause(1);
+end
+
 
 disp('The ground state energy:');
 E
