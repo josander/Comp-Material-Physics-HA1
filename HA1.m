@@ -15,15 +15,22 @@ alpha = [0.297104, 1.236745, 5.749982, 38.216677];
 
 % Initialisation of C
 C = [1, 2, 2, 1]';
-C = C/norm(C);
+
 
 % Construct the matrices h, S and C
 h = getH(alpha);
 S = getS(alpha);
 Q = getQ(alpha);
 
+% Normalize C via overlap maxtrix
+C = normC( C, S );
+
 % Construct the matrix F
 F = getF(h, C, Q);
+
+% Get the energy of the state
+
+E  = getEG(h, C,Q );
 
 % Solve the generalised eigenvalue problem
 Eigen = (F*C)\(S*C); % [4 x 4]x[4 x 1]\[4 x 4]x[4 x 1] = [4 x 1]\[4 x 1]
