@@ -6,7 +6,7 @@ S = zeros(4, 4);
 
     for p = 1:4
         for q = 1:4
-            S(p, q) = sqrt(pi)/(2*sqrt(alpha(p)+alpha(q)));
+            S(p, q) = sqrt(pi)/(4*(alpha(p)+alpha(q))^(3/2));
         end
     end
 
