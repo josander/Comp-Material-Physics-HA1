@@ -22,25 +22,35 @@ S = getS(alpha);
 Q = getQ(alpha);
 
 energyDiff = 1;
-
-
-while energyDiff > 10^(-5) % [eV]
-
+Eold = 0;
 % Normalize C via overlap maxtrix
 C = normC(C, S );
 
-% Construct the matrix F
-F = getF(h, C, Q);
+while energyDiff > 10^(-5) % [eV]
 
-% Solve the generalised eigenvalue problem
-Eigen = (F*C)\(S*C) % [4 x 4]x[4 x 1]\[4 x 4]x[4 x 1] = [4 x 1]\[4 x 1]
 
-% Get the ground state energy of the state
-E  = getEG(h, C, Q)
 
-% Calculate the new energy difference
-energyDiff = abs(Eold - E);
-Eold = E;
+    % Construct the matrix F
+    F = getF(h, C, Q);
+
+    % Solve the generalised eigenvalue problem
+    %Eigen = (F*C)\(S*C) % [4 x 4]x[4 x 1]\[4 x 4]x[4 x 1] = [4 x 1]\[4 x 1]
+    [A B]= eig(F,S);
+
+    % Find the lowest real eigenvalue
+    [x y] = find(B == min(diag(B)));
+
+    C = A(:,x); 
+
+    % Normalize C via overlap maxtrix
+    C = normC(C, S );
+
+    % Get the ground state energy of the state
+    E  = getEG(h, C, Q)
+
+    % Calculate the new energy difference
+    energyDiff = abs(Eold - E);
+    Eold = E;
 
 end
 
@@ -55,3 +65,5 @@ V = @(r) 1./r - (1 + 1./r) .* exp(-2.*r);
 plot(r, V(r));
 xlabel('Radial distance r');
 ylabel('The Hartree potential V');
+
+%%
