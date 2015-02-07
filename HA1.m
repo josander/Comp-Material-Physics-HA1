@@ -25,6 +25,10 @@ Q = getQ(alpha);
 % Construct the matrix F
 F = getF(h, C, Q);
 
+% Get the energy of the state
+
+E  = getEG(h, C,Q );
+
 % Solve the generalised eigenvalue problem
 Eigen = (F*C)\(S*C); % [4 x 4]x[4 x 1]\[4 x 4]x[4 x 1] = [4 x 1]\[4 x 1]
 
