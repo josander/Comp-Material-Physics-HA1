@@ -1,4 +1,4 @@
-%% Home assignment 1
+%% Home assignment 1.
 % Task 1
 
 clc
