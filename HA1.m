@@ -16,7 +16,9 @@ alpha = [0.297104, 1.236745, 5.749982, 38.216677];
 % Initialisation of C
 C = [1, 2, 2, 1]';
 
-% Construct the matrix C
+% Construct the matrices h, S and C
+%h = getH(alpha);
+%S = getS(alpha);
 Q = getQ(alpha);
 
 % Construct the matrix F
@@ -38,14 +40,12 @@ for p = 1:4
     end % End q-loop
 end % End p-loop
 
-chi = @(r) exp(-alpha(1).*r.^2);
-
-Q(1, 2, 3, 4)
 
 %%
-% Solve the gereralised eigenvalue problem
-Eigen = (F.*C)\(S.*C); % [4 x 4]x[4 x 1]\[4 x 4]x[4 x 1] = [4 x 1]\[4 x 1]
 
+% Solve the generalised eigenvalue problem
+Eigen = (F*C)\(S*C); % [4 x 4]x[4 x 1]\[4 x 4]x[4 x 1] = [4 x 1]\[4 x 1]
+% Varför funkar inte detta????
 
 
 %% Task 2
