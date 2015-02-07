@@ -23,6 +23,7 @@ Q = getQ(alpha);
 
 % Variable to keep track of the energy difference
 energyDiff = 1;
+Eold = 0;
 
 while energyDiff > 10^(-5) % [eV]
 
