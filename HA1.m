@@ -21,28 +21,36 @@ h = getH(alpha);
 S = getS(alpha);
 Q = getQ(alpha);
 
+% Variable to keep track of the energy difference
 energyDiff = 1;
-
 
 while energyDiff > 10^(-5) % [eV]
 
-% Normalize C via overlap maxtrix
-C = normC(C, S );
+    % Normalize C via overlap maxtrix
+    C = normC(C, S );
 
-% Construct the matrix F
-F = getF(h, C, Q);
+    % Construct the matrix F
+    F = getF(h, C, Q);
 
-% Solve the generalised eigenvalue problem
-Eigen = (F*C)\(S*C) % [4 x 4]x[4 x 1]\[4 x 4]x[4 x 1] = [4 x 1]\[4 x 1]
+    % Solve the generalised eigenvalue problem
+    Eigen = (F*C)\(S*C) % [4 x 4]x[4 x 1]\[4 x 4]x[4 x 1] = [4 x 1]\[4 x 1]
 
-% Get the ground state energy of the state
-E  = getEG(h, C, Q)
+    % Get the ground state energy of the state
+    E  = getEG(h, C, Q)
 
-% Calculate the new energy difference
-energyDiff = abs(Eold - E);
-Eold = E;
+    % Calculate the new energy difference
+    energyDiff = abs(Eold - E);
+    Eold = E;
 
 end
+
+disp('The ground state energy:');
+E
+disp('C:')
+C
+disp('alpha:')
+alpha
+
 
 %% Task 2
 clc
