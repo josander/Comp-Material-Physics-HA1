@@ -6,7 +6,7 @@ h = zeros(4, 4);
 
     for p = 1:4
         for q = 1:4
-            h(p, q) = 1; % Whaaat?
+            h(p, q) = 1;
         end
     end
 

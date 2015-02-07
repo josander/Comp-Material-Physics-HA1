@@ -1,10 +1,7 @@
-function F = getF(Q)
+function F = getF(h, C, Q)
 
 F = zeros(4, 4);
 sum = 0;
-
-C = [1, 2, 2, 1];
-h = zeros(4, 4);
 
 for p = 1:4
     for q = 1:4
