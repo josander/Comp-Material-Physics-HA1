@@ -21,8 +21,10 @@ h = getH(alpha);
 S = getS(alpha);
 Q = getQ(alpha);
 
+% Variable to keep track of the energy difference
 energyDiff = 1;
 Eold = 0;
+
 % Normalize C via overlap maxtrix
 C = normC(C, S );
 
@@ -47,12 +49,19 @@ while energyDiff > 10^(-5) % [eV]
 
     % Get the ground state energy of the state
     E  = getEG(h, C, Q)
-
     % Calculate the new energy difference
     energyDiff = abs(Eold - E);
     Eold = E;
 
 end
+
+disp('The ground state energy:');
+E
+disp('C:')
+C
+disp('alpha:')
+alpha
+
 
 %% Task 2
 clc
