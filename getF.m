@@ -4,6 +4,7 @@ F = zeros(4, 4);
 sum = 0;
 
 C = [1, 2, 2, 1];
+C = C/norm(C);
 h = zeros(4, 4);
 
 for p = 1:4

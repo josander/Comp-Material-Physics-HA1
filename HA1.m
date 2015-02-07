@@ -15,7 +15,7 @@ alpha = [0.297104, 1.236745, 5.749982, 38.216677];
 
 % Initialisation of C
 C = [1, 2, 2, 1]';
-
+C = C/norm(C);
 % Construct the matrices h, S and C
 %h = getH(alpha);
 %S = getS(alpha);
