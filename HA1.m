@@ -5,12 +5,14 @@ clc
 clear all
 
 % Declaration of alpha
-alpha = {0.297104, 1.236745, 5.749982, 38.216677};
+alpha = [0.297104, 1.236745, 5.749982, 38.216677];
 
 r = linspace(1,100);
 
 chi = @(r) exp(-alpha(1).*r.^2);
 
+
+Q = getQelement(2, 1, 3, 4)
 
 %% Task 2
 clc
