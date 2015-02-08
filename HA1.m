@@ -26,16 +26,20 @@ energyDiff = 1;
 Eold = 0;
 
 % Normalize C via overlap maxtrix
+
 C = normC(C, S);
 
 
 while energyDiff > 10^(-5) % [eV]
 
+
     % Construct the matrix F
     F = getF(h, C, Q);
 
     % Solve the generalised eigenvalue problem
+
     [A B]= eig(F, S);
+
 
     % Find the lowest real eigenvalue
     [x y] = find(B == min(diag(B)));
@@ -44,16 +48,19 @@ while energyDiff > 10^(-5) % [eV]
     C = A(:,y); 
 
     % Normalize C via overlap maxtrix
+
     C = normC(C, S);
 
     % Get the energy of the state
     E  = getEG(h, C, Q);
     
+
     % Calculate the new energy difference
     energyDiff = abs(Eold - E);
     Eold = E;
 
 end
+
 
 disp('The ground state energy:');
 E
@@ -67,10 +74,35 @@ alpha
 clc
 clear all
 
+rMax = 50;
+N = 1000 + 2; %Number of points
+x = linspace(0,rMax, N - 1);
+Y = zeros(N,1);
+Ynew = zeros(N,1);
+maxError = 1;
+h = rMax/N;
+
+
+eDens = @(r) r*(r - rMax);
+
+while maxError > 10^-3
+    
+    Y(3) = Y(1);
+    Y(N-2) = Y(N);
+    for i = 2:N-1
+        Ynew(i) = 2*pi*eDens(x(i))*x(i)*h^2 + 0.5*Y(i+1) + 0.5*Y(i-1);
+
+    end
+    maxError = max(abs(Ynew - Y));
+        
+    Y = Ynew;
+        
+    
+end
 
 
 % Plot the Hartree potential
-r = linspace(0,100,10000);
+r = linspace(0,rMax,10000);
 V = @(r) 1./r - (1 + 1./r) .* exp(-2.*r);
 plot(r, V(r));
 xlabel('Radial distance r');
