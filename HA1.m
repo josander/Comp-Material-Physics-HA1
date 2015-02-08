@@ -97,17 +97,13 @@ eDens = @(r) r*(r - rMax);
 % solution is smaller or equal to 10^-3
 while maxDiff > 10^-3
     
-    % The boundary conditions saying that U(x=0)=U(x=rmax)=
-    Y(3) = Y(1);
-    Y(N-2) = Y(N);
-    
     % Loop through the coordinates and calculate new solution
     for i = 2:N-1
         Ynew(i) = 2*pi*eDens(x(i))*x(i)*h^2 + 0.5*Y(i+1) + 0.5*Y(i-1);
     end
     
-    % Maximal change in the solution compared to the last iteration
-    maxDiff = max(abs(Ynew - Y));
+    % Maximal change in the solution compared to the last one
+    maxDiff = max(abs(Ynew - Y))
     
     % Save new solution
     Y = Ynew;
@@ -115,12 +111,12 @@ while maxDiff > 10^-3
 end
 
 % Plot the calculated solution
-r = linspace(0,rMax,10000);
-plot(r, Y);
+plot(x, Y);
 xlabel('Radial distance r');
 ylabel('Calculated solution Y');
 
 % Plot the Hartree potential
+r = linspace(0,rMax,10000);
 V = @(r) 1./r - (1 + 1./r) .* exp(-2.*r);
 plot(r, V(r));
 xlabel('Radial distance r');
