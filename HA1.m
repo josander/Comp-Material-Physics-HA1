@@ -114,8 +114,13 @@ while maxDiff > 10^-3
     
 end
 
-% Plot the Hartree potential
+% Plot the calculated solution
 r = linspace(0,rMax,10000);
+plot(r, Y);
+xlabel('Radial distance r');
+ylabel('Calculated solution Y');
+
+% Plot the Hartree potential
 V = @(r) 1./r - (1 + 1./r) .* exp(-2.*r);
 plot(r, V(r));
 xlabel('Radial distance r');
