@@ -130,39 +130,39 @@ clear all
 rMax = 50;
 
 % Number of points
-N = 1001; 
+N = 11; 
 
 % Radial, discetizised points 
-x = linspace(0,rMax, N);
-
-% Initialise two arrays with zeros
-Y = zeros(N,1);
-Ynew = zeros(N,1);
-
-% Maximal difference in the solution, initially put to 1
-maxDiff = 1;
+x = linspace(10^(-5),rMax, N);
 
 % The step length between two points
 h = rMax/N;
 
-% Iterate until the convergence condition; the maximal difference in the
-% solution is smaller or equal to 10^-3
-while maxDiff > 10^-3
-    
-    % Loop through the coordinates and calculate new solution
-    for i = 2:N-1
-        Ynew(i) = Y(i)*(1/h^2-1/x(i))-1/(2*h^2)*(Y(i+1)+Y(i-1));
-    end
-    
-    % Maximal change in the solution compared to the last one
-    maxDiff = max(abs(Ynew - Y))
+% Initialise a matrix with zeros
+Y = zeros(N,N);
 
-    % Save new solution
-    Y = Ynew;
-    
-    pause(1)
-    
+% Construct a, b and c
+for i = 1:N
+    a(i) = 1/h^2-1/x(i);
 end
+b = - 1/(2*h^2);
+c = - 1/(2*h^2);
+
+% Construct the Y solution
+for i = 1:N-1
+       Y(i,i) = a(i);
+       Y(i,i+1) = b;
+       Y(i+1,i) = c;
+end
+
+% The last element in the matrix
+Y(N,N) = a(N);
+
+% Solve the eigenvalue problem
+[A B] = eig(Y);
+
+% Get the eigenvalues
+diag(B)
 
 %% Task 4
 
