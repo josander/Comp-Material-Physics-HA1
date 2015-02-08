@@ -92,7 +92,7 @@ h = rMax/N;
 % Single orbital density for the hydrogen atom
 a0 = 1; % Bohr radius
 %eDens = @(r) 4/(a0^4)*r^2*exp(-2*r/a0);
-Psi = @(r) 2*exp(-r/a0)/a0^(3/2);
+Psi = @(r) 2*exp(-r/a0)/a0^(3/2); % Enligt Thijssen eq (3.23)
 eDens = @(r) 4*exp(-2*r/a0)/a0^(3); 
 
 
@@ -116,7 +116,7 @@ end
 % Plot the theoretical Hartree potential and the calculated solution
 r = linspace(0,rMax,N);
 V = @(r) 1./r - (1 + 1./r) .* exp(-2.*r);
-plot(r, V(r), x, Y/norm(Y));
+plot(r, V(r), x, Y);
 xlabel('Radial distance r');
 ylabel('The Hartree potential V');
 
@@ -130,10 +130,10 @@ clear all
 rMax = 50;
 
 % Number of points
-N = 11; 
+N = 101; 
 
 % Radial, discetizised points 
-x = linspace(10^(-5),rMax, N);
+x = linspace(10^(-9),rMax, N);
 
 % The step length between two points
 h = rMax/N;
