@@ -72,7 +72,7 @@ clc
 clear all
 
 % Cutoff radius
-rMax = 100;
+rMax = 50;
 
 % Number of points
 N = 1001; 
@@ -86,14 +86,14 @@ Ynew = zeros(N,1);
 
 % Maximal difference in the solution, initially put to 1
 maxDiff = 1;
-
 % The step length between two points
 h = rMax/N;
 
 % Electron density for the hydrogen atom
 a_0 = 1; % Bohr radius
 
-eDens = @(r) 4/(a_0^4)*r^2*exp(-2*r/a_0);
+eDens = @(r) 2*r.^2.*exp(-2*r./a_0)/(a_0^4);
+
 
 % Iterate until the convergence condition; the maximal difference in the
 % solution is smaller or equal to 10^-3
@@ -102,9 +102,9 @@ while maxDiff > 10^-3
 
     % Loop through the coordinates and calculate new solution
     for i = 2:N-1
-        Ynew(i) = 2*pi*eDens(x(i))*x(i)*h^2 + 0.5*Y(i+1) + 0.5*Y(i-1);
+        Ynew(i) = eDens(x(i))*x(i)*h^2 + 0.5*Y(i+1) + 0.5*Y(i-1);
     end
-    
+   
     % Maximal change in the solution compared to the last iteration
     maxDiff = max(abs(Ynew - Y));
     % Save new solution
@@ -114,10 +114,11 @@ end
 
 
 % Plot the Hartree potential
-r = linspace(0,rMax,N);
+
 
 V = @(r) 1./r - (1 + 1./r) .* exp(-2.*r);
-plot(r, V(r), r,Y);
+Y = Y %+ x'/rMax;
+plot(x, V(x), x,Y);
 xlabel('Radial distance r');
 ylabel('The Hartree potential V');
 
