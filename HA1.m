@@ -72,13 +72,13 @@ clc
 clear all
 
 % Cutoff radius
-rMax = 50;
+rMax = 100;
 
 % Number of points
-N = 1000 + 2; 
+N = 1001; 
 
 % Radial, discetizised points 
-x = linspace(0,rMax, N - 1);
+x = linspace(0,rMax, N);
 
 % Initialise two arrays with zeros
 Y = zeros(N,1);
@@ -91,7 +91,9 @@ maxDiff = 1;
 h = rMax/N;
 
 % Electron density for the hydrogen atom
-eDens = @(r) r*(r - rMax);
+a_0 = 1; % Bohr radius
+
+eDens = @(r) 4/(a_0^4)*r^2*exp(-2*r/a_0);
 
 % Iterate until the convergence condition; the maximal difference in the
 % solution is smaller or equal to 10^-3
@@ -104,11 +106,12 @@ while maxDiff > 10^-3
     
     % Maximal change in the solution compared to the last one
     maxDiff = max(abs(Ynew - Y))
-    
+
     % Save new solution
     Y = Ynew;
     
 end
+
 
 % Plot the calculated solution
 plot(x, Y);
@@ -116,9 +119,9 @@ xlabel('Radial distance r');
 ylabel('Calculated solution Y');
 
 % Plot the Hartree potential
-r = linspace(0,rMax,10000);
+r = linspace(0,rMax,N);
 V = @(r) 1./r - (1 + 1./r) .* exp(-2.*r);
-plot(r, V(r));
+plot(r, V(r), r,Y);
 xlabel('Radial distance r');
 ylabel('The Hartree potential V');
 
