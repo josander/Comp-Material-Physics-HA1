@@ -14,7 +14,7 @@ F = zeros(4, 4);
 alpha = [0.297104, 1.236745, 5.749982, 38.216677];
 
 % Initialisation of C
-C = [1, 0.5, 0.5, 1]';
+C = [1, 2, 0.5, 1]';
 
 % Construct the matrices h, S and C
 h = getH(alpha);
@@ -145,17 +145,13 @@ maxDiff = 1;
 % The step length between two points
 h = rMax/N;
 
-% Single orbital density for the hydrogen atom
-a0 = 1; % Bohr radius
-eDens = @(r) 4/(a0^4)*r^2*exp(-2*r/a0);
-
 % Iterate until the convergence condition; the maximal difference in the
 % solution is smaller or equal to 10^-3
 while maxDiff > 10^-3
     
     % Loop through the coordinates and calculate new solution
     for i = 2:N-1
-        Ynew(i) = 2*pi*eDens(x(i))*x(i)*h^2 + 0.5*Y(i+1) + 0.5*Y(i-1);
+        Ynew(i) = Y(i)*(1/h^2-1/x(i))-1/(2*h^2)*(Y(i+1)+Y(i-1));
     end
     
     % Maximal change in the solution compared to the last one
@@ -163,6 +159,8 @@ while maxDiff > 10^-3
 
     % Save new solution
     Y = Ynew;
+    
+    pause(1)
     
 end
 
