@@ -28,16 +28,15 @@ Eold = 0;
 % Normalize C via overlap maxtrix
 C = normC(C, S);
 
-
+% Iterate until the convergence condition; the maximal difference in the
+% solution is smaller or equal to 10^-5
 while energyDiff > 10^(-5) % [eV]
-
 
     % Construct the matrix F
     F = getF(h, C, Q);
 
     % Solve the generalised eigenvalue problem
     [A B]= eig(F, S);
-
 
     % Find the lowest real eigenvalue
     [x y] = find(B == min(diag(B)));
@@ -50,7 +49,6 @@ while energyDiff > 10^(-5) % [eV]
 
     % Get the energy of the state
     E  = getEG(h, C, Q);
-    
 
     % Calculate the new energy difference
     energyDiff = abs(Eold - E);
@@ -60,7 +58,7 @@ while energyDiff > 10^(-5) % [eV]
 
 end
 
-
+% Print the results
 disp('The ground state energy:');
 E
 disp('C:')
@@ -123,4 +121,4 @@ plot(r, V(r));
 xlabel('Radial distance r');
 ylabel('The Hartree potential V');
 
-%%
+%% Task 3
