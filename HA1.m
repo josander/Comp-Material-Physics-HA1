@@ -14,7 +14,7 @@ F = zeros(4, 4);
 alpha = [0.297104, 1.236745, 5.749982, 38.216677];
 
 % Initialisation of C
-C = [1, .5, .5, 1]';
+C = [1, 0.5, 0.5, 1]';
 
 % Construct the matrices h, S and C
 h = getH(alpha);
@@ -61,18 +61,17 @@ end
 % Print the results
 disp('The ground state energy:');
 E
-disp('C:')
+disp('Coefficients in wave func:')
 C
-disp('alpha:')
-alpha
 
 
 %% Task 2
 clc
+clf
 clear all
 
 % Cutoff radius
-rMax = 100;
+rMax = 50;
 
 % Number of points
 N = 1001; 
@@ -90,10 +89,12 @@ maxDiff = 1;
 % The step length between two points
 h = rMax/N;
 
-% Electron density for the hydrogen atom
-a_0 = 1; % Bohr radius
+% Single orbital density for the hydrogen atom
+a0 = 1; % Bohr radius
+%eDens = @(r) 4/(a0^4)*r^2*exp(-2*r/a0);
+Psi = @(r) 2*exp(-r/a0)/a0^(3/2);
+eDens = @(r) 4*exp(-2*r/a0)/a0^(3); 
 
-eDens = @(r) 4/(a_0^4)*r^2*exp(-2*r/a_0);
 
 % Iterate until the convergence condition; the maximal difference in the
 % solution is smaller or equal to 10^-3
@@ -112,17 +113,58 @@ while maxDiff > 10^-3
     
 end
 
-
-% Plot the calculated solution
-plot(x, Y);
-xlabel('Radial distance r');
-ylabel('Calculated solution Y');
-
-% Plot the Hartree potential
+% Plot the theoretical Hartree potential and the calculated solution
 r = linspace(0,rMax,N);
 V = @(r) 1./r - (1 + 1./r) .* exp(-2.*r);
-plot(r, V(r), r,Y);
+plot(r, V(r), x, Y/norm(Y));
 xlabel('Radial distance r');
 ylabel('The Hartree potential V');
 
 %% Task 3
+
+clc
+clf
+clear all
+
+% Cutoff radius
+rMax = 50;
+
+% Number of points
+N = 1001; 
+
+% Radial, discetizised points 
+x = linspace(0,rMax, N);
+
+% Initialise two arrays with zeros
+Y = zeros(N,1);
+Ynew = zeros(N,1);
+
+% Maximal difference in the solution, initially put to 1
+maxDiff = 1;
+
+% The step length between two points
+h = rMax/N;
+
+% Single orbital density for the hydrogen atom
+a0 = 1; % Bohr radius
+eDens = @(r) 4/(a0^4)*r^2*exp(-2*r/a0);
+
+% Iterate until the convergence condition; the maximal difference in the
+% solution is smaller or equal to 10^-3
+while maxDiff > 10^-3
+    
+    % Loop through the coordinates and calculate new solution
+    for i = 2:N-1
+        Ynew(i) = 2*pi*eDens(x(i))*x(i)*h^2 + 0.5*Y(i+1) + 0.5*Y(i-1);
+    end
+    
+    % Maximal change in the solution compared to the last one
+    maxDiff = max(abs(Ynew - Y))
+
+    % Save new solution
+    Y = Ynew;
+    
+end
+
+%% Task 4
+
