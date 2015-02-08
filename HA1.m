@@ -53,7 +53,6 @@ while energyDiff > 10^(-5) % [eV]
     energyDiff = abs(Eold - E);
     Eold = E;
 
-    pause(1);
 end
 
 disp('The ground state energy:');
@@ -67,6 +66,7 @@ alpha
 %% Task 2
 clc
 clear all
+
 
 
 % Plot the Hartree potential
