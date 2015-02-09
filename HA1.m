@@ -81,59 +81,41 @@ clf
 clear all
 
 % Cutoff radius
-rMax = 50000;
+rMax = 50;
 
 % Number of points in the grid
 N = 1001; 
 
-
-
 % Radial, discetizised points 
 x = linspace(0,rMax, N);
 
-% Initialise two arrays with zeros
+% Initialise an array with zeros
 Y = zeros(N,1);
 
-% Maximal difference in the solution, initially put to 1
-maxDiff = 1;
 % The step length between two points
 h = rMax/(N-1);
 
 % Single orbital density for the hydrogen atom
-a0 = 1; % Bohr radius
-%eDens = @(r) 4/(a0^4)*r^2*exp(-2*r/a0);
+a0 = 1; % Bohr radius in a.u
 
-%Psi = @(r) 2*exp(-r/a0)/a0^(3/2); % Enligt Thijssen eq (3.23)
-%eDens = @(r) 4*exp(-2*r/a0)/a0^(3); 
-%eDens = @(r) 2*r.^2.*exp(-2*r./a0)/(a0^4);
+densFunc = @(r)exp(-2*r/a0)*a0^(-3)/(pi);
 
-%eDens = @(r) exp(-2.*r)/pi;
+% The soulution is given by Y(i) = eDens(i) + 0.5(Y(i+1) + Y(i-1)) 
+% where eDens = 2*pi*h^2*x(i)*densFunc(i)
 
-%eDens = @(r) 4*r.^2.*exp(-2*r./a0)/(12*pi*a0^4);
-densConst = a0^(-3)/(pi);
-densFunc = @(r)densConst*exp(-2*r/a0);
-
+diffConst = 2*pi*h^2;
 eDens = densFunc(x(2:end));
-m = 0;
+eDens =eDens.*x(2:end)*diffConst;
 
-% Iterate until the convergence condition; the maximal difference in the
-% solution is smaller or equal to 10^-3
-%while maxDiff > 10^-10
-while m < 5*10^5
+nIterations = 5*10^5;
 
-       %Boundary conditions Y(1+1) = Y(N-1) = 0 
-    
+for m = 1:nIterations
+
     % Loop through the coordinates and calculate new solution
+    % Y(0) = Y(N) = 0
     for i = 2:N-1
-        Y(i) = 2*pi*eDens(i)*x(i)*h^2 + 0.5*Y(i+1) + 0.5*Y(i-1);
+        Y(i) = eDens(i-1) + 0.5*Y(i+1) + 0.5*Y(i-1);
     end
-
-    % Maximal change in the solution compared to the last iteration
-    %maxDiff = max(abs(Ynew - Y));
-
-    % Save new solution
-    %Y = Ynew;
-    m= m+1;
 end
 
 
@@ -141,14 +123,13 @@ end
 
 V = @(r) 1./r - (1 + 1./r) .* exp(-2.*r);
 
-
-
 Vsh = Y(2:end)'./x(2:end) + 1/rMax;
-plot(x(2:end), V(x(2:end)), x(2:end), Vsh);
+plot(x(2:end), V(x(2:end)),'-', x(2:end), Vsh,'--');
 
 
-xlabel('Radial distance r');
+xlabel('Radial distance [r/a_0]');
 ylabel('The Hartree potential V');
+L = legend('Analytic Hartree potential','Numeric Hartree potential');
 
 %% Task 3
 
@@ -157,7 +138,7 @@ clf
 clear all
 
 % Cutoff radius
-rMax = 50;
+rMax = 20;
 
 % Number of points
 N = 101; 
@@ -168,8 +149,8 @@ x = linspace(10^(-9),rMax, N);
 % The ste
 
 eDens = @(r) 2*r.^2.*exp(-2*r./a0)/(a0^4);
-p length between two points
-h = rMax/N;
+%p length between two points
+h = rMax/(N-1);
 
 % Initialise a matrix with zeros
 Y = zeros(N,N);
@@ -191,11 +172,20 @@ end
 % The last element in the matrix
 Y(N,N) = a(N);
 
+Y(1,1) = 0;
+Y(1,2) = 0;
+
+Y(end,end-1) = 0;
+Y(end,end) = 0;
 % Solve the eigenvalue problem
 [A B] = eig(Y);
 
 % Get the eigenvalues
-diag(B)
+e = (diag(B))
+
+index = find(e == min(e));
+e(index)
+plot(A(:,index))
 
 %% Task 4
 
