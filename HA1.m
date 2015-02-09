@@ -81,7 +81,7 @@ clf
 clear all
 
 % Cutoff radius
-rMax = 50000;
+rMax = 50;
 
 % Number of points in the grid
 N = 1001; 
@@ -106,7 +106,6 @@ Psi = @(r) 2*exp(-r/a0)/a0^(3/2); % Enligt Thijssen eq (3.23)
 densConst = a0^(-3)/(pi);
 densFunc = @(r) densConst*exp(-2*r/a0);
 
-
 eDens = densFunc(x(2:end));
 m = 0;
 
@@ -118,7 +117,7 @@ while m < 5*10^5
     
     % Loop through the coordinates and calculate new solution
     for i = 2:N-1
-        Y(i) = 2*pi*eDens(i)*x(i)*h^2 + 0.5*Y(i+1) + 0.5*Y(i-1);
+        Y(i) = 2*pi*eDens(i-1)*x(i)*h^2 + 0.5*Y(i+1) + 0.5*Y(i-1);
     end
 
     % Maximal change in the solution compared to the last iteration
@@ -133,12 +132,22 @@ end
 
 
 %% Plot the Hartree potential
+clf
+clc
 
 V = @(r) 1./r - (1 + 1./r) .* exp(-2.*r);
 Vsh = Y(2:end)'./x(2:end) + 1/rMax;
-plot(x(2:end), V(x(2:end)), x(2:end), Vsh);
-xlabel('Radial distance r');
-ylabel('The Hartree potential V');
+plot(x(2:end), V(x(2:end)),'.', x(2:end), Vsh,'--', 'MarkerSize', 12);
+
+set(gcf,'renderer','painters','PaperPosition',[0 0 4.7 3]);
+X = xlabel('Distance from the nucleus r [$a_0$]','Interpreter','latex', 'fontsize', 12);
+%y = ylabel('PDF [1/$a_0$]','Interpreter','latex', 'fontsize', 12);    
+title('Electron potential in hydrogen','Interpreter','latex', 'fontsize', 14);
+set(X, 'Units', 'Normalized', 'Position', [0.5, -0.06, 0]);
+%set(y, 'Units', 'Normalized', 'Position', [-0.1, 0.5, 0]);
+l = legend('Hartree potential $V_H$','Solved single Hartree potential $V_{sH}$');
+set(l,'Interpreter','latex')
+print(gcf,'-depsc2','task2.eps')
 
 %% Task 3
 
@@ -185,4 +194,6 @@ Y(N,N) = a(N);
 diag(B)
 
 %% Task 4
+
+
 
