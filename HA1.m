@@ -66,11 +66,11 @@ disp('Coefficients in wave func:')
 C
 
 %% Plot task 1
-x = linspace(0,10,1000);
+x = linspace(-5,5,1000);
 phi = @(r) exp(-alpha(1)*r.^2).*C(1) + exp(-alpha(2)*r.^2).*C(2) + ...
     exp(-alpha(3)*r.^2).*C(3)+ exp(-alpha(4)*r.^2).*C(4);
 
-plot(x,phi(x),'o')
+plot(x,abs(phi(x)))
 
 xlabel('Radial distance r');
 ylabel('The wave function');
@@ -86,36 +86,43 @@ rMax = 50;
 % Number of points in the grid
 N = 1001; 
 
+
 % Radial, discetizised points 
 x = linspace(0,rMax, N);
 
 % Initialise an array with zeros
 Y = zeros(N,1);
+Ynew = zeros(N,1);
+
 
 % The step length between two points
 h = rMax/(N-1);
 
 % Single orbital density for the hydrogen atom
-a0 = 1; % Bohr radius in a.u
 
-densFunc = @(r)exp(-2*r/a0)*a0^(-3)/(pi);
+a0 = 1; % Bohr radius
+Psi = @(r) 2*exp(-r/a0)/a0^(3/2); % Enligt Thijssen eq (3.23)
+densConst = a0^(-3)/(pi);
+densFunc = @(r) densConst*exp(-2*r/a0);
 
-% The soulution is given by Y(i) = eDens(i) + 0.5(Y(i+1) + Y(i-1)) 
-% where eDens = 2*pi*h^2*x(i)*densFunc(i)
 
 diffConst = 2*pi*h^2;
 eDens = densFunc(x(2:end));
 eDens =eDens.*x(2:end)*diffConst;
 
+
 nIterations = 5*10^5;
 
 for m = 1:nIterations
+
+    
 
     % Loop through the coordinates and calculate new solution
     % Y(0) = Y(N) = 0
     for i = 2:N-1
         Y(i) = eDens(i-1) + 0.5*Y(i+1) + 0.5*Y(i-1);
     end
+
 end
 
 
@@ -123,11 +130,13 @@ end
 
 V = @(r) 1./r - (1 + 1./r) .* exp(-2.*r);
 
+
 Vsh = Y(2:end)'./x(2:end) + 1/rMax;
 plot(x(2:end), V(x(2:end)),'-', x(2:end), Vsh,'--');
 
 
 xlabel('Radial distance [r/a_0]');
+
 ylabel('The Hartree potential V');
 L = legend('Analytic Hartree potential','Numeric Hartree potential');
 
@@ -146,9 +155,7 @@ N = 101;
 % Radial, discetizised points 
 x = linspace(10^(-9),rMax, N);
 
-% The ste
 
-eDens = @(r) 2*r.^2.*exp(-2*r./a0)/(a0^4);
 %p length between two points
 h = rMax/(N-1);
 
