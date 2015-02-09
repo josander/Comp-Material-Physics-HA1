@@ -3,6 +3,7 @@
 
 clc
 clear all
+format long
 
 % Initialise new matrices with zeros
 h = zeros(4, 4);
@@ -68,7 +69,11 @@ C
 x = linspace(0,10,1000);
 phi = @(r) exp(-alpha(1)*r.^2).*C(1) + exp(-alpha(2)*r.^2).*C(2) + ...
     exp(-alpha(3)*r.^2).*C(3)+ exp(-alpha(4)*r.^2).*C(4);
-plot(x,phi(x))
+
+plot(x,phi(x),'o')
+
+xlabel('Radial distance r');
+ylabel('The wave function');
 
 %% Task 2
 clc
@@ -97,10 +102,10 @@ h = rMax/N;
 a0 = 1; % Bohr radius
 %eDens = @(r) 4/(a0^4)*r^2*exp(-2*r/a0);
 Psi = @(r) 2*exp(-r/a0)/a0^(3/2); % Enligt Thijssen eq (3.23)
-eDens = @(r) 4*exp(-2*r/a0)/a0^(3); 
+%eDens = @(r) 4*exp(-2*r/a0)/a0^(3); 
+%eDens = @(r) 2*r.^2.*exp(-2*r./a0)/(a0^4);
 
-
-eDens = @(r) 2*r.^2.*exp(-2*r./a0)/(a0^4);
+eDens = @(r) exp(-2.*r)/pi;
 
 
 
@@ -113,7 +118,6 @@ while maxDiff > 10^-3
         Ynew(i) = 2*pi*eDens(x(i))*x(i)*h^2 + 0.5*Y(i+1) + 0.5*Y(i-1);
     end
 
-   
     % Maximal change in the solution compared to the last iteration
     maxDiff = max(abs(Ynew - Y));
 
@@ -122,13 +126,13 @@ while maxDiff > 10^-3
     
 end
 
-
 % Plot the Hartree potential
-
-
+r = linspace(0,rMax,N);
+VsH = Y./x' - 1./rMax;
 V = @(r) 1./r - (1 + 1./r) .* exp(-2.*r);
+plot(r, V(r), x, VsH);
 
-plot(r, V(r), x, Y);
+plot(x, VsH)
 
 xlabel('Radial distance r');
 ylabel('The Hartree potential V');
