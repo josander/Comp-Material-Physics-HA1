@@ -86,16 +86,12 @@ rMax = 50;
 % Number of points in the grid
 N = 1001; 
 
-
 % Radial, discetizised points 
 x = linspace(0,rMax, N);
 
-% Initialise two arrays with zeros
+% Initialise an array with zeros
 Y = zeros(N,1);
 Ynew = zeros(N,1);
-
-% Maximal difference in the solution, initially put to 1
-maxDiff = 1;
 
 % The step length between two points
 h = rMax/(N-1);
@@ -106,27 +102,19 @@ Psi = @(r) 2*exp(-r/a0)/a0^(3/2); % Enligt Thijssen eq (3.23)
 densConst = a0^(-3)/(pi);
 densFunc = @(r) densConst*exp(-2*r/a0);
 
+diffConst = 2*pi*h^2;
 eDens = densFunc(x(2:end));
-m = 0;
+eDens = eDens.*x(2:end)*diffConst;
 
-% Iterate until the convergence condition; the maximal difference in the
-% solution is smaller or equal to 10^-3
+nIterations = 5*10^5;
 
-%while maxDiff > 10^-10
-while m < 5*10^5
-    
+for m = 1:nIterations
+
     % Loop through the coordinates and calculate new solution
+    % Y(0) = Y(N) = 0
     for i = 2:N-1
-        Y(i) = 2*pi*eDens(i-1)*x(i)*h^2 + 0.5*Y(i+1) + 0.5*Y(i-1);
+        Y(i) = eDens(i-1) + 0.5*Y(i+1) + 0.5*Y(i-1);
     end
-
-    % Maximal change in the solution compared to the last iteration
-    %maxDiff = max(abs(Ynew - Y));
-
-    % Save new solution
-    %Y = Ynew;
-    
-    m= m+1;
 
 end
 
@@ -145,9 +133,10 @@ X = xlabel('Distance from the nucleus r [$a_0$]','Interpreter','latex', 'fontsiz
 title('Electron potential in hydrogen','Interpreter','latex', 'fontsize', 14);
 set(X, 'Units', 'Normalized', 'Position', [0.5, -0.06, 0]);
 %set(y, 'Units', 'Normalized', 'Position', [-0.1, 0.5, 0]);
-l = legend('Hartree potential $V_H$','Solved single Hartree potential $V_{sH}$');
+l = legend('Analytic Hartree potential $V_H$','Numerical single Hartree potential $V_{sH}$');
 set(l,'Interpreter','latex')
 print(gcf,'-depsc2','task2.eps')
+
 
 %% Task 3
 
@@ -156,7 +145,7 @@ clf
 clear all
 
 % Cutoff radius
-rMax = 50;
+rMax = 20;
 
 % Number of points
 N = 101; 
@@ -164,8 +153,8 @@ N = 101;
 % Radial, discetizised points 
 x = linspace(10^(-9),rMax, N);
 
-% Length between two points in the grid
-h = rMax/N;
+%p length between two points
+h = rMax/(N-1);
 
 % Initialise a matrix with zeros
 Y = zeros(N,N);
@@ -187,11 +176,20 @@ end
 % The last element in the matrix
 Y(N,N) = a(N);
 
+Y(1,1) = 0;
+Y(1,2) = 0;
+
+Y(end,end-1) = 0;
+Y(end,end) = 0;
 % Solve the eigenvalue problem
 [A B] = eig(Y);
 
 % Get the eigenvalues
-diag(B)
+e = (diag(B))
+
+index = find(e == min(e));
+e(index)
+plot(A(:,index))
 
 %% Task 4
 
