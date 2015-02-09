@@ -66,11 +66,11 @@ disp('Coefficients in wave func:')
 C
 
 %% Plot task 1
-x = linspace(0,10,1000);
+x = linspace(-5,5,1000);
 phi = @(r) exp(-alpha(1)*r.^2).*C(1) + exp(-alpha(2)*r.^2).*C(2) + ...
     exp(-alpha(3)*r.^2).*C(3)+ exp(-alpha(4)*r.^2).*C(4);
 
-plot(x,phi(x),'o')
+plot(x,abs(phi(x)))
 
 xlabel('Radial distance r');
 ylabel('The wave function');
@@ -104,8 +104,8 @@ a0 = 1; % Bohr radius
 Psi = @(r) 2*exp(-r/a0)/a0^(3/2); % Enligt Thijssen eq (3.23)
 %eDens = @(r) 4*exp(-2*r/a0)/a0^(3); 
 %eDens = @(r) 2*r.^2.*exp(-2*r./a0)/(a0^4);
-
 eDens = @(r) exp(-2.*r)/pi;
+eDens = @(r) exp(-2.*r)/6.28318;
 
 
 
@@ -132,8 +132,6 @@ VsH = Y./x' - 1./rMax;
 V = @(r) 1./r - (1 + 1./r) .* exp(-2.*r);
 plot(r, V(r), x, VsH);
 
-plot(x, VsH)
-
 xlabel('Radial distance r');
 ylabel('The Hartree potential V');
 
@@ -152,10 +150,7 @@ N = 101;
 % Radial, discetizised points 
 x = linspace(10^(-9),rMax, N);
 
-% The ste
-
-eDens = @(r) 2*r.^2.*exp(-2*r./a0)/(a0^4);
-p length between two points
+% Length between two points in the grid
 h = rMax/N;
 
 % Initialise a matrix with zeros
