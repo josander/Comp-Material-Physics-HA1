@@ -173,23 +173,29 @@ for i = 1:N-1
        Y(i+1,i) = c;
 end
 
-% The last element in the matrix
-Y(N,N) = a(N);
-
+% Implement the boundary conditions
 Y(1,1) = 0;
 Y(1,2) = 0;
-
 Y(end,end-1) = 0;
 Y(end,end) = 0;
+
 % Solve the eigenvalue problem
 [A B] = eig(Y);
 
 % Get the eigenvalues
 e = (diag(B))
 
+% Find index of the minimal eigenvalue
 index = find(e == min(e));
-e(index)
-plot(A(:,index))
+
+% Get the minimal eigenvalue in Hartree energy
+minEig = e(index);
+
+% Get energy in eV
+Energy = 27.211396132*minEig
+
+% Plot the eigenvector
+plot(abs(A(:,index)))
 
 %% Task 4
 
