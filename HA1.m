@@ -147,10 +147,10 @@ clf
 clear all
 
 % Cutoff radius
-rMax = 20;
+rMax = 50;
 
 % Number of points
-N = 101; 
+N = 1001; 
 
 % Radial, discetizised points 
 x = linspace(10^(-9),rMax, N);
@@ -190,9 +190,9 @@ Y(end,end) = 0;
 % Get the eigenvalues
 e = (diag(B))
 
-index = find(e == min(e));
+index = find(e < 0);
 e(index)
-plot(A(:,index))
+plot(-A(:,index))
 
 %% Task 4
 
