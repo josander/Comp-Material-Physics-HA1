@@ -81,13 +81,15 @@ clf
 clear all
 
 % Cutoff radius
-rMax = 50;
+rMax = 10;
 
-% Number of points
-N = 10001; 
+% Number of points in the grid
+N = 1001; 
+
+N = N + 2; % Add points beyond the boundary 
 
 % Radial, discetizised points 
-x = linspace(0,rMax, N);
+x = linspace(-rMax/(N-3),rMax*(1+1/(N-3)), N);
 
 % Initialise two arrays with zeros
 Y = zeros(N,1);
@@ -95,43 +97,44 @@ Ynew = zeros(N,1);
 
 % Maximal difference in the solution, initially put to 1
 maxDiff = 1;
+
 % The step length between two points
-h = rMax/N;
+h = rMax/(N-3);
 
 % Single orbital density for the hydrogen atom
 a0 = 1; % Bohr radius
-%eDens = @(r) 4/(a0^4)*r^2*exp(-2*r/a0);
 Psi = @(r) 2*exp(-r/a0)/a0^(3/2); % Enligt Thijssen eq (3.23)
-%eDens = @(r) 4*exp(-2*r/a0)/a0^(3); 
-%eDens = @(r) 2*r.^2.*exp(-2*r./a0)/(a0^4);
-eDens = @(r) exp(-2.*r)/pi;
-eDens = @(r) exp(-2.*r)/6.28318;
-
+densConst = a0^(-3)/(pi);
+eDens = @(r) densConst*exp(-2*r/a0);
 
 
 % Iterate until the convergence condition; the maximal difference in the
 % solution is smaller or equal to 10^-3
-while maxDiff > 10^-3
+while maxDiff > 10^-7
+
+    %Boundary conditions Y(1+1) = Y(N-1) = 0 
+    Ynew(1) = - 4*pi*eDens(x(1))*x(1)*h^2 - Y(3);
+    Y(end) = - 4*pi*eDens(x(end))*x(end)*h^2 - Y(end - 2);
     
     % Loop through the coordinates and calculate new solution
     for i = 2:N-1
-        Ynew(i) = 2*pi*eDens(x(i))*x(i)*h^2 + 0.5*Y(i+1) + 0.5*Y(i-1);
+        Ynew(i) = 2*pi*eDens(x(i))*x(i)*h^2 + 0.5*Y(i+1) + 0.5*Ynew(i-1);
     end
 
     % Maximal change in the solution compared to the last iteration
-    maxDiff = max(abs(Ynew - Y));
+    maxDiff = max(abs(Ynew - Y))
 
     % Save new solution
     Y = Ynew;
     
 end
 
-% Plot the Hartree potential
-r = linspace(0,rMax,N);
-VsH = Y./x' - 1./rMax;
-V = @(r) 1./r - (1 + 1./r) .* exp(-2.*r);
-plot(r, V(r), x, VsH);
 
+%% Plot the Hartree potential
+
+V = @(r) 1./r - (1 + 1./r) .* exp(-2.*r);
+Vsh = Y(3:end-1)'./x(3:end-1) + 1/rMax;
+plot(x(3:end-1), V(x(3:end-1)), x(3:end-1), Vsh);
 xlabel('Radial distance r');
 ylabel('The Hartree potential V');
 
