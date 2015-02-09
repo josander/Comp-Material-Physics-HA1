@@ -145,10 +145,10 @@ clf
 clear all
 
 % Cutoff radius
-rMax = 20;
+rMax = 10;
 
 % Number of points
-N = 101; 
+N = 1001; 
 
 % Radial, discetizised points 
 x = linspace(10^(-9),rMax, N);
@@ -189,13 +189,13 @@ e = (diag(B))
 index = find(e == min(e));
 
 % Get the minimal eigenvalue in Hartree energy
-minEig = e(index);
+minEig = e(index)
 
 % Get energy in eV
 Energy = 27.211396132*minEig
 
 % Plot the eigenvector
-plot(abs(A(:,index)))
+plot(abs(A(:,index)/sqrt(h)))
 
 %% Task 4
 
