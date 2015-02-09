@@ -14,7 +14,7 @@ F = zeros(4, 4);
 alpha = [0.297104, 1.236745, 5.749982, 38.216677];
 
 % Initialisation of C
-C = [1, .5, .5, 1]';
+C = [1, 2, 0.5, 1]';
 
 % Construct the matrices h, S and C
 h = getH(alpha);
@@ -61,14 +61,77 @@ end
 % Print the results
 disp('The ground state energy:');
 E
-disp('C:')
+disp('Coefficients in wave func:')
 C
-disp('alpha:')
-alpha
 
 
 %% Task 2
 clc
+clf
+clear all
+
+% Cutoff radius
+rMax = 50;
+
+% Number of points
+N = 10001; 
+
+% Radial, discetizised points 
+x = linspace(0,rMax, N);
+
+% Initialise two arrays with zeros
+Y = zeros(N,1);
+Ynew = zeros(N,1);
+
+% Maximal difference in the solution, initially put to 1
+maxDiff = 1;
+% The step length between two points
+h = rMax/N;
+
+% Single orbital density for the hydrogen atom
+a0 = 1; % Bohr radius
+%eDens = @(r) 4/(a0^4)*r^2*exp(-2*r/a0);
+Psi = @(r) 2*exp(-r/a0)/a0^(3/2);
+eDens = @(r) 4*exp(-2*r/a0)/a0^(3); 
+
+
+eDens = @(r) 2*r.^2.*exp(-2*r./a0)/(a0^4);
+
+
+
+% Iterate until the convergence condition; the maximal difference in the
+% solution is smaller or equal to 10^-3
+while maxDiff > 10^-3
+    
+    % Loop through the coordinates and calculate new solution
+    for i = 2:N-1
+        Ynew(i) = 2*pi*eDens(x(i))*x(i)*h^2 + 0.5*Y(i+1) + 0.5*Y(i-1);
+    end
+
+   
+    % Maximal change in the solution compared to the last iteration
+    maxDiff = max(abs(Ynew - Y));
+
+    % Save new solution
+    Y = Ynew;
+    
+end
+
+
+% Plot the Hartree potential
+
+
+V = @(r) 1./r - (1 + 1./r) .* exp(-2.*r);
+Y = Y; %+ x'/rMax;
+plot(x, V(x), x,Y);
+
+xlabel('Radial distance r');
+ylabel('The Hartree potential V');
+
+%% Task 3
+
+clc
+clf
 clear all
 
 % Cutoff radius
@@ -86,40 +149,31 @@ Ynew = zeros(N,1);
 
 % Maximal difference in the solution, initially put to 1
 maxDiff = 1;
-% The step length between two points
+
+% The ste
+
+eDens = @(r) 2*r.^2.*exp(-2*r./a0)/(a0^4);
+p length between two points
 h = rMax/N;
-
-% Electron density for the hydrogen atom
-a_0 = 1; % Bohr radius
-
-eDens = @(r) 2*r.^2.*exp(-2*r./a_0)/(a_0^4);
-
 
 % Iterate until the convergence condition; the maximal difference in the
 % solution is smaller or equal to 10^-3
 while maxDiff > 10^-3
     
-
     % Loop through the coordinates and calculate new solution
     for i = 2:N-1
-        Ynew(i) = eDens(x(i))*x(i)*h^2 + 0.5*Y(i+1) + 0.5*Y(i-1);
+        Ynew(i) = Y(i)*(1/h^2-1/x(i))-1/(2*h^2)*(Y(i+1)+Y(i-1));
     end
-   
-    % Maximal change in the solution compared to the last iteration
-    maxDiff = max(abs(Ynew - Y));
+    
+    % Maximal change in the solution compared to the last one
+    maxDiff = max(abs(Ynew - Y))
+
     % Save new solution
     Y = Ynew;
     
+    pause(1)
+    
 end
 
+%% Task 4
 
-% Plot the Hartree potential
-
-
-V = @(r) 1./r - (1 + 1./r) .* exp(-2.*r);
-Y = Y %+ x'/rMax;
-plot(x, V(x), x,Y);
-xlabel('Radial distance r');
-ylabel('The Hartree potential V');
-
-%% Task 3
