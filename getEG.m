@@ -10,7 +10,7 @@ for p = 1:4
 
         for r = 1:4
             for s = 1:4
-                sum = Q(p, r, q, s) * C(p) * C(q)* C(r) * C(s);
+                sum = sum + Q(p, r, q, s) * C(p) * C(q)* C(r) * C(s);
             end
         end
         
