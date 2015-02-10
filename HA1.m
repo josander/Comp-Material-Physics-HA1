@@ -144,6 +144,9 @@ clc
 clf
 clear all
 
+% Borh radius
+a0 = 1;
+
 % Cutoff radius
 rMax = 10;
 
@@ -194,8 +197,23 @@ minEig = e(index)
 % Get energy in eV
 Energy = 27.211396132*minEig
 
-% Plot the eigenvector
-plot(abs(A(:,index)/sqrt(h)))
+% Analytic wave function
+Psi = @(r) 2/(a0^(3/2))*exp(-r/a0);
+
+%%
+% Plot the gound state wave function
+plot(x, Psi(x), x, abs(A(:,index)/sqrt(h)))
+axis([0 10 0 0.8]);
+
+set(gcf,'renderer','painters','PaperPosition',[0 0 4.7 3]);
+X = xlabel('Distance from the nucleus r [$a_0$]','Interpreter','latex', 'fontsize', 12);
+%y = ylabel('PDF [1/$a_0$]','Interpreter','latex', 'fontsize', 12);    
+title('Ground state wave function in hydrogen','Interpreter','latex', 'fontsize', 14);
+set(X, 'Units', 'Normalized', 'Position', [0.5, -0.06, 0]);
+%set(y, 'Units', 'Normalized', 'Position', [-0.1, 0.5, 0]);
+l = legend('Analytic wave function','Numerical wave function');
+set(l,'Interpreter','latex')
+print(gcf,'-depsc2','task3.eps')
 
 %% Task 4
 
