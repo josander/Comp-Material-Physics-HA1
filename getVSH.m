@@ -1,18 +1,16 @@
-function [ VSH ] = getVSH( N, rMax, nIter, psi)
+function [ VSH ] = getVSH( N, rMax, nRelax, psi)
 %GETVSH Summary of this function goes here
 %   
 
-
 x = linspace(rMax/N,rMax, N);
-
 Y = zeros(1,N+2);
 u_sq = zeros(1,N); 
 
 h = rMax/(N);
 
-u_sq = 4*pi.*x.*psi.^2 *2*pi*h^2; % u^2/r * 2 *pi *h^2 
+u_sq = 2*pi*h^2*4*pi.*x.*psi.^2; % u^2/r * 2 *pi *h^2 
 
-for m = 1:nIter
+for m = 1:nRelax
 
     % Loop through the coordinates and calculate new solution
     % Y(0) = Y(N) = 0
@@ -21,6 +19,7 @@ for m = 1:nIter
     end
 
 end
+
 VSH = Y(2:end-1)./x + 1/rMax;
 
 

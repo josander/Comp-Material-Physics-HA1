@@ -30,7 +30,7 @@ Eold = 0;
 C = normC(C, S);
 
 % Iterate until the convergence condition; the maximal difference in the
-% solution is smaller or equal to 10^-5
+% solution is smaller or equal to 10^-6
 while energyDiff > 10^(-6) % [eV]
 
     % Construct the matrix F
@@ -76,7 +76,7 @@ xlabel('Radial distance r');
 ylabel('The wave function');
 
 
-%% Task 2
+%% Task 2: Get single Hartree potential
 clc
 clf
 clear all
@@ -231,6 +231,8 @@ print(gcf,'-depsc2','task3.eps')
 
 %% Task 4
 
+% EJ FÄRDIG!!!
+
 % Cutoff radius
 rMax = 10;
 
@@ -240,43 +242,68 @@ N = 1001;
 % Radial, discetizised points 
 x = linspace(10^(-9),rMax, N);
 
-%p length between two points
-h = rMax/(N-1);
+% Initialise an array with zeros
+Psi = zeros(N,1);
 
-% Get the ingle Hartree potential
-V = getVSH(N, rMax, );
+% Length between two points
+h = rMax/(N-1);
 
 % Initialise a matrix with zeros
 Y = zeros(N,N);
 
-% Construct a, b and c
-for i = 1:N
-    a(i) = 1/h^2-2/x(i)+V(i);
+% Number of relaxations for the single Hartree potential
+nRelax = 50000;
+
+% Variable to keep track of the energy difference
+energyDiff = 1;
+Eold = 0;
+
+% Iterate until the convergence condition; the maximal difference in the
+% solution is smaller or equal to 10^-6
+while energyDiff > 10^(-6) % [eV]
+
+    % Get the ingle Hartree potential
+    V = getVSH(N, rMax, nRelax, Psi);
+
+    % Construct a, b and c
+    for i = 1:N
+        a(i) = 1/h^2-2/x(i)+V(i);
+    end
+    b = - 1/(2*h^2);
+    c = - 1/(2*h^2);
+
+    % Construct the solution
+    for i = 1:N-1
+           Y(i,i) = a(i);
+           Y(i,i+1) = b;
+           Y(i+1,i) = c;
+    end
+
+    % Implement the boundary conditions
+    Y(1,1) = 1;
+    Y(1,2) = 0;
+    Y(end,end-1) = 0;
+    Y(end,end) = 1;
+
+    % Solve the eigenvalue problem
+    [A B] = eig(Y);
+
+    % Get the eigenvalues
+    e = (diag(B));
+
+    % Find index of the minimal eigenvalue
+    index = find(e == min(e));
+
+    % Get the minimal eigenvalue in Hartree energy
+    minEig = e(index)
+
+    % Get energy in eV
+    E = 27.211396132*minEig
+
+    % Calculate the new energy difference
+    energyDiff = abs(Eold - E);
+    
+    % Save the solution
+    Eold = E;
+
 end
-b = - 1/(2*h^2);
-c = - 1/(2*h^2);
-
-% Construct the solution
-for i = 1:N-1
-       Y(i,i) = a(i);
-       Y(i,i+1) = b;
-       Y(i+1,i) = c;
-end
-
-% Implement the boundary conditions
-Y(1,1) = 1;
-Y(1,2) = 0;
-Y(end,end-1) = 0;
-Y(end,end) = 1;
-
-% Solve the eigenvalue problem
-[A B] = eig(Y);
-
-% Get the eigenvalues
-e = (diag(B));
-
-% Find index of the minimal eigenvalue
-index = find(e == min(e));
-
-% Get the minimal eigenvalue in Hartree energy
-minEig = e(index)
