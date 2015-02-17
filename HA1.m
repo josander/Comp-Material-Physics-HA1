@@ -75,6 +75,7 @@ plot(x,abs(phi(x)))
 xlabel('Radial distance r');
 ylabel('The wave function');
 
+
 %% Task 2
 clc
 clf
@@ -131,9 +132,11 @@ plot(x(2:end), V(x(2:end)),'.');
 hold on
 plot( x(2:end), Vsh,'--', 'MarkerSize', 12, 'Color', 'red')
 
+
 set(gcf,'renderer','painters','PaperPosition',[0 0 6 3]);
 X = xlabel('Distance from the nucleus r [$a_0$]','Interpreter','latex', 'fontsize', 12);
 %y = ylabel('PDF [1/$a_0$]','Interpreter','latex', 'fontsize', 12);    
+
 title('Electron potential in hydrogen','Interpreter','latex', 'fontsize', 14);
 
 %set(y, 'Units', 'Normalized', 'Position', [-0.1, 0.5, 0]);
@@ -181,10 +184,10 @@ for i = 1:N-1
        Y(i+1,i) = c;
 end
 % Implement the boundary conditions
-Y(1,1) = 0;
+Y(1,1) = 1;
 Y(1,2) = 0;
 Y(end,end-1) = 0;
-Y(end,end) = 0;
+Y(end,end) = 1;
 
 % Solve the eigenvalue problem
 [A B] = eig(Y);
@@ -228,5 +231,52 @@ print(gcf,'-depsc2','task3.eps')
 
 %% Task 4
 
+% Cutoff radius
+rMax = 10;
 
+% Number of points
+N = 1001; 
 
+% Radial, discetizised points 
+x = linspace(10^(-9),rMax, N);
+
+%p length between two points
+h = rMax/(N-1);
+
+% Get the ingle Hartree potential
+V = getVSH(N, rMax, );
+
+% Initialise a matrix with zeros
+Y = zeros(N,N);
+
+% Construct a, b and c
+for i = 1:N
+    a(i) = 1/h^2-2/x(i)+V(i);
+end
+b = - 1/(2*h^2);
+c = - 1/(2*h^2);
+
+% Construct the solution
+for i = 1:N-1
+       Y(i,i) = a(i);
+       Y(i,i+1) = b;
+       Y(i+1,i) = c;
+end
+
+% Implement the boundary conditions
+Y(1,1) = 1;
+Y(1,2) = 0;
+Y(end,end-1) = 0;
+Y(end,end) = 1;
+
+% Solve the eigenvalue problem
+[A B] = eig(Y);
+
+% Get the eigenvalues
+e = (diag(B));
+
+% Find index of the minimal eigenvalue
+index = find(e == min(e));
+
+% Get the minimal eigenvalue in Hartree energy
+minEig = e(index)
