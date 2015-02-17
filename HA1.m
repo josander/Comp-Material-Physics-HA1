@@ -65,7 +65,7 @@ E
 disp('Coefficients in wave func:')
 C
 
-%% Plot task 1
+%% Plot the found wave function
 x = linspace(-5,5,1000);
 phi = @(r) exp(-alpha(1)*r.^2).*C(1) + exp(-alpha(2)*r.^2).*C(2) + ...
     exp(-alpha(3)*r.^2).*C(3)+ exp(-alpha(4)*r.^2).*C(4);
@@ -119,9 +119,11 @@ for m = 1:nIterations
 end
 
 
-%% Plot the Hartree potential
+%% Plot the Hartree potentials
 clf
 clc
+
+set(gcf,'renderer','painters','PaperPosition',[0 0 12 8]);
 
 V = @(r) 1./r - (1 + 1./r) .* exp(-2.*r);
 Vsh = Y(2:end)'./x(2:end) + 1/rMax;
@@ -135,12 +137,13 @@ X = xlabel('Distance from the nucleus r [$a_0$]','Interpreter','latex', 'fontsiz
 title('Electron potential in hydrogen','Interpreter','latex', 'fontsize', 14);
 
 %set(y, 'Units', 'Normalized', 'Position', [-0.1, 0.5, 0]);
+
 l = legend('Analytic Hartree potential $V_H$','Numerical single Hartree potential $V_{sH}$');
 plotTickLatex2D
 set(X, 'Units', 'Normalized', 'Position', [0.5, -0.06, 0]);
 set(l,'Interpreter','latex')
+plotTickLatex2D
 print(gcf,'-depsc2','task2.eps')
-
 
 %% Task 3
 clc
@@ -187,7 +190,7 @@ Y(end,end) = 0;
 [A B] = eig(Y);
 
 % Get the eigenvalues
-e = (diag(B))
+e = (diag(B));
 
 % Find index of the minimal eigenvalue
 index = find(e == min(e));
@@ -219,6 +222,7 @@ set(l,'Interpreter','latex')
 
 plotTickLatex2D
 set(X, 'Units', 'Normalized', 'Position', [0.5, -0.06, 0]);
+
 print(gcf,'-depsc2','task3.eps')
 
 
