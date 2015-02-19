@@ -18,7 +18,7 @@ for r = 1:20
     alpha = [0.297104, 1.236745, 5.749982, 38.216677];
 
     % Initialise an array with zeros
-    Psi = exp(-alpha(1)*x.^2).*C(1) + exp(-alpha(2)*x.^2).*C(2) + ...
+    U0 = exp(-alpha(1)*x.^2).*C(1) + exp(-alpha(2)*x.^2).*C(2) + ...
         exp(-alpha(3)*x.^2).*C(3)+ exp(-alpha(4)*x.^2).*C(4);
 
     % Length between two points
@@ -28,7 +28,7 @@ for r = 1:20
     Y = zeros(N,N);
 
     % Number of relaxations for the single Hartree potential
-    nRelax = 50000;
+    nRelax = 5000;
 
     % Variable to keep track of the energy difference
     energyDiff = 1;
@@ -39,7 +39,7 @@ for r = 1:20
     while energyDiff > 10^(-3) % [eV]
 
         % Get the single Hartree potential
-        V = getVSH(N, rMax, nRelax, Psi);
+        V = getVSH(N, rMax, nRelax, U0);
 
         % Construct a, b and c
         for i = 1:N
@@ -71,7 +71,7 @@ for r = 1:20
         index = find(e == min(e));
 
         % 
-        Psi = A(:,index)';
+        U0 = A(:,index)';
 
         % Get the minimal eigenvalue in Hartree energy
         minEig = e(index);
@@ -115,7 +115,7 @@ for N = nPointsInit:1:nPointsFinal
     alpha = [0.297104, 1.236745, 5.749982, 38.216677];
 
     % Initialise an array with zeros
-    Psi = exp(-alpha(1)*x.^2).*C(1) + exp(-alpha(2)*x.^2).*C(2) + ...
+    U0 = exp(-alpha(1)*x.^2).*C(1) + exp(-alpha(2)*x.^2).*C(2) + ...
         exp(-alpha(3)*x.^2).*C(3)+ exp(-alpha(4)*x.^2).*C(4);
 
     % Length between two points
@@ -125,7 +125,7 @@ for N = nPointsInit:1:nPointsFinal
     Y = zeros(N,N);
 
     % Number of relaxations for the single Hartree potential
-    nRelax = 50000;
+    nRelax = 5000;
 
     % Variable to keep track of the energy difference
     energyDiff = 1;
@@ -136,7 +136,7 @@ for N = nPointsInit:1:nPointsFinal
     while energyDiff > 10^(-3) % [eV]
 
         % Get the single Hartree potential
-        V = getVSH(N, rMax, nRelax, Psi);
+        V = getVSH(N, rMax, nRelax, U0);
 
         % Construct a, b and c
         for i = 1:N
@@ -168,7 +168,7 @@ for N = nPointsInit:1:nPointsFinal
         index = min(find(e == min(e)));
         
         % 
-        Psi = A(:,index)';
+        U0 = A(:,index)';
 
         % Get the minimal eigenvalue in Hartree energy
         minEig = e(index);
@@ -202,19 +202,19 @@ clc
 rMax = 10;
 
 % Number of points
-N = 1001; 
+N = 2001; 
 
 % Radial, discetizised points 
 x = linspace(10^(-9),rMax, N);
 
 % Coefficients of wave function from task 1
-C = [-0.146916049461378, -0.393060020070374, -0.411115799349951, -0.261968242091914];
+C = -1*[-0.146916049461378, -0.393060020070374, -0.411115799349951, -0.261968242091914];
 
 % Declaration of alpha
 alpha = [0.297104, 1.236745, 5.749982, 38.216677];
 
-% Initialise wave function with solution from task 1
-Psi = (exp(-alpha(1)*x.^2).*C(1) + exp(-alpha(2)*x.^2).*C(2) + ...
+% Initialise the wave function with solution from task 1
+U0 = (exp(-alpha(1)*x.^2).*C(1) + exp(-alpha(2)*x.^2).*C(2) + ...
     exp(-alpha(3)*x.^2).*C(3)+ exp(-alpha(4)*x.^2).*C(4)).*x;
 
 % Length between two points
@@ -226,7 +226,7 @@ Y = zeros(N,N);
 % Number of relaxations for the single Hartree potential
 nRelax = 50000;
 
-% Variable to keep track of the energy difference
+% Variables to keep track of the energy difference
 energyDiff = 1;
 Eold = 0;
 
@@ -235,7 +235,7 @@ Eold = 0;
 while energyDiff > 10^(-5) % [eV]
 
     % Get the single Hartree potential
-    V = getVSH(N, rMax, nRelax, Psi);
+    V = getVSH(N, rMax, nRelax, U0);
 
     % Construct a, b and c
     for i = 1:N
@@ -264,10 +264,10 @@ while energyDiff > 10^(-5) % [eV]
     e = (diag(B));
 
     % Find index of the minimal eigenvalue
-    index = find(e == min(e));
+    index = min(find(e == min(e)));
     
-    % 
-    Psi = A(:,index)';
+    % The new radial wave function
+    U0 = A(:,index)';
 
     % Get the minimal eigenvalue in Hartree energy
     minEig = e(index);
@@ -289,3 +289,4 @@ Energy = E
 %%
 clf
 plot(A(:,index))
+
