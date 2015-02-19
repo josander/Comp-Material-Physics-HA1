@@ -230,8 +230,7 @@ print(gcf,'-depsc2','task3.eps')
 
 
 %% Task 4
-
-% EJ FÄRDIG!!!
+clc
 
 % Cutoff radius
 rMax = 10;
@@ -243,7 +242,7 @@ N = 1001;
 x = linspace(10^(-9),rMax, N);
 
 % Initialise an array with zeros
-Psi = zeros(N,1);
+Psi = zeros(1,N);
 
 % Length between two points
 h = rMax/(N-1);
@@ -260,9 +259,9 @@ Eold = 0;
 
 % Iterate until the convergence condition; the maximal difference in the
 % solution is smaller or equal to 10^-6
-while energyDiff > 10^(-6) % [eV]
+while energyDiff > 10^(-5) % [eV]
 
-    % Get the ingle Hartree potential
+    % Get the single Hartree potential
     V = getVSH(N, rMax, nRelax, Psi);
 
     % Construct a, b and c
@@ -293,17 +292,22 @@ while energyDiff > 10^(-6) % [eV]
 
     % Find index of the minimal eigenvalue
     index = find(e == min(e));
+    
+    % 
+    Psi = A(:,index)';
 
     % Get the minimal eigenvalue in Hartree energy
-    minEig = e(index)
+    minEig = e(index);
 
     % Get energy in eV
-    E = 27.211396132*minEig
+    E = 27.211396132*minEig;
 
     % Calculate the new energy difference
-    energyDiff = abs(Eold - E);
+    energyDiff = abs(Eold - E)
     
     % Save the solution
     Eold = E;
 
 end
+
+Energy = E

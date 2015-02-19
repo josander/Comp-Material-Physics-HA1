@@ -8,6 +8,7 @@ u_sq = zeros(1,N);
 
 h = rMax/(N);
 
+
 u_sq = 2*pi*h^2*4*pi.*x.*psi.^2; % u^2/r * 2 *pi *h^2 
 
 for m = 1:nRelax
