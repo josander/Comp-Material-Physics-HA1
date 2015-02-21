@@ -33,9 +33,9 @@ for rMax = rMaxInit:dr:rMaxFinal
     energyDiff = 1;
     Eold = 0;
 
-    % Iterate until the convergence condition; the maximal difference in the
-    % solution is smaller or equal to 10^-6
-    while energyDiff > 10^(-3) % [eV]
+    % Iterate until the convergence condition; the maximal denergy difference
+    % 10^-5
+    while energyDiff > 10^(-5) % [eV]
         
         % Get the single Hartree potential
         Vsh = solveVSH(x, U0);
@@ -80,9 +80,21 @@ end
 
 
 %% Plot the energies with respect to rMax
-
 clf
-plot(RMax,Energy);
+clc
+
+set(gcf,'renderer','painters','PaperPosition',[0 0 12 8]);
+
+plot(RMax,Energy,'-', 'MarkerSize', 12, 'Color', 'red');
+
+X = xlabel('Cut off radius $r_max$ [$a_0$]','Interpreter','latex', 'fontsize', 12);
+y = ylabel('Ground state energy [eV]','Interpreter','latex', 'fontsize', 12);    
+title('Ground state energy for Helium','Interpreter','latex', 'fontsize', 14);
+set(y, 'Units', 'Normalized', 'Position', [-0.1, 0.5, 0]);
+set(X, 'Units', 'Normalized', 'Position', [0.5, -0.06, 0]);
+
+plotTickLatex2D
+print(gcf,'-depsc2','convRMax.eps')
 
 %%
 
@@ -90,21 +102,27 @@ clc
 clear all
 
 nPointsInit = 101;
-nPointsFinal = 2001;
-dn = 100;
+nPointsFinal = 4001;
+dn = 50;
 
 
 % FIND GRIDPOINT-CONVERGENCE 
 for N = nPointsInit:dn:nPointsFinal
     
     % Cutoff radius
-    rMax = 10;
+    rMax = 15;
     
     % Grid density
     h = rMax/(N-1);
 
     % Radial, discetizised points 
     x = linspace(10^(-9),rMax, N);
+    
+    % Coefficients of wave function from task 1
+    C = -1*[-0.146916049461378, -0.393060020070374, -0.411115799349951, -0.261968242091914];
+
+    % Declaration of alpha
+    alpha = [0.297104, 1.236745, 5.749982, 38.216677];
 
     % Initialise an array with zeros
     U0 = exp(-alpha(1)*x.^2).*C(1) + exp(-alpha(2)*x.^2).*C(2) + ...
@@ -117,13 +135,13 @@ for N = nPointsInit:dn:nPointsFinal
     energyDiff = 1;
     Eold = 0;
 
-    % Iterate until the convergence condition; the maximal difference in the
-    % solution is smaller or equal to 10^-6
-    while energyDiff > 10^(-3) % [eV]
+    % Iterate until the convergence condition; the maximal denergy difference
+    % 10^-5
+    while energyDiff > 10^(-5) % [eV]
 
         % Get the single Hartree potential
         Vsh = solveVSH(x, U0);
-
+set(gcf,'renderer','painters','PaperPosition',[0 0 6 3]);
         % Define the potential
         pot = -2./x+Vsh;
 
@@ -155,26 +173,39 @@ for N = nPointsInit:dn:nPointsFinal
     end
 
     Energy((N-nPointsInit)/dn+1) = E;
-    gridDens((N-nPointsInit)/dn+1) = h;
+    gridSize((N-nPointsInit)/dn+1) = N;
     
-    h
+    N
     
 end
 
 %% Plot the different energies with respect to the number of gridpoints
 
 clf
-plot(gridDens,Energy,'.')
+clc
+
+set(gcf,'renderer','painters','PaperPosition',[0 0 12 8]);
+
+plot(gridSize,Energy,'-', 'MarkerSize', 12, 'Color', 'red');
+
+X = xlabel('Grid size  N [$a_0$]','Interpreter','latex', 'fontsize', 12);
+y = ylabel('Energy [eV]','Interpreter','latex', 'fontsize', 12);    
+title('Ground state energy for Helium','Interpreter','latex', 'fontsize', 14);
+set(y, 'Units', 'Normalized', 'Position', [-0.1, 0.5, 0]);
+set(X, 'Units', 'Normalized', 'Position', [0.5, -0.06, 0]);
+
+plotTickLatex2D
+print(gcf,'-depsc2','convGrid.eps')
 
 %%
 
 clc
 
 % Cutoff radius
-rMax = 30;
+rMax = 15;
 
 % Number of points
-N = 2001; 
+N = 3001; 
 
 % Radial, discetizised points 
 x = linspace(10^(-9),rMax, N);
@@ -195,19 +226,13 @@ U0 = U0/sqrt(trapz(4*pi.*x.^2.*U0.^2));
 % Length between two points
 h = rMax/(N-1);
 
-% Initialise a matrix with zeros
-Y = zeros(N,N);
-
-% Number of relaxations for the single Hartree potential
-nRelax = 50000;
-
 % Variables to keep track of the energy difference
 energyDiff = 1;
 Eold = 0;
 
-% Iterate until the convergence condition; the maximal difference in the
-% solution is smaller or equal to 10^-6
-while energyDiff > 10^(-8) % [eV]
+% Iterate until the convergence condition; the maximal denergy difference
+% 10^-5
+while energyDiff > 10^(-5) % [eV]
 
     % Get the single Hartree potential
     Vsh = solveVSH(x, U0);
@@ -243,9 +268,28 @@ while energyDiff > 10^(-8) % [eV]
 end
 
 Energy = E
+waveFunc = A(:,index)'./x;
 
+%% Plot the wave functions
 
-%%
 clf
-plot(A(:,index))
+clc
 
+set(gcf,'renderer','painters','PaperPosition',[0 0 12 8]);
+
+plot(x(2:end),psi_r(2:end)./(x.*psi_r(2)))
+hold on
+plot(x(2:end), waveFunc(2:end)./waveFunc(2),'--', 'MarkerSize', 12, 'Color', 'red');
+
+X = xlabel('Distance from the nucleus r [$a_0$]','Interpreter','latex', 'fontsize', 12);
+y = ylabel('Normalised wave function [-]','Interpreter','latex', 'fontsize', 12);    
+
+title('Electron potential in hydrogen','Interpreter','latex', 'fontsize', 14);
+set(y, 'Units', 'Normalized', 'Position', [-0.1, 0.5, 0]);
+set(X, 'Units', 'Normalized', 'Position', [0.5, -0.06, 0]);
+
+l = legend('Normalised wave function from Task 1 $\Psi_1/\Psi_1(0)$','Normalised wave function from Task 4 $\Psi_4/\Psi_4(0)$');
+set(l,'Interpreter','latex')
+plotTickLatex2D
+
+print(gcf,'-depsc2','task4.eps')

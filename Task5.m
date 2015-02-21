@@ -35,9 +35,9 @@ nRelax = 50000;
 energyDiff = 1;
 Eold = 0;
 
-% Iterate until the convergence condition; the maximal difference in the
-% solution is smaller or equal to 10^-6
-while energyDiff > 10^(-8) % [eV]
+% Iterate until the convergence condition; the maximal denergy difference
+% 10^-5
+while energyDiff > 10^(-5) % [eV]
 
     % Get the single Hartree potential
     Vsh = solveVSH(x, U0);
@@ -77,3 +77,4 @@ end
 
 disp('Ground state energy in eV:')
 Energy = E
+
