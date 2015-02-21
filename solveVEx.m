@@ -6,7 +6,7 @@ function [ VEx ] = solveVEx( psi_r )
 
 const = ((3/pi)^(-2/3) - 3*(3/pi)^(1/3));
 
-VEx = (2*abs(psi_r)^2)^(1/3)/4;
+VEx = (2.*abs(psi_r).^2).^(1/3)/4;
 
 end
 
