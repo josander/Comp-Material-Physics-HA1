@@ -2,11 +2,14 @@
 
 clc
 
+rMaxInit = 5;
+
+
 % FIND rMax-CONVERGENCE 
-for r = 1:20
+for rMax = rMaxInit:10
     
-    % Number of points
-    N = 1001; 
+    % Number of grid spaces
+    N = 2001; 
 
     % Radial, discetizised points 
     x = linspace(10^(-9),rMax, N);
@@ -37,40 +40,24 @@ for r = 1:20
     % Iterate until the convergence condition; the maximal difference in the
     % solution is smaller or equal to 10^-6
     while energyDiff > 10^(-3) % [eV]
-
+        
         % Get the single Hartree potential
-        V = getVSH(N, rMax, nRelax, U0);
+        V = solveVSH(x, U0);
 
-        % Construct a, b and c
-        for i = 1:N
-            a(i) = 1/h^2-2/x(i)+V(i);
-        end
-        b = - 1/(2*h^2);
-        c = - 1/(2*h^2);
+        % Define the potential
+        pot = -2./x+V;
 
-        % Construct the solution
-        for i = 1:N-1
-               Y(i,i) = a(i);
-               Y(i,i+1) = b;
-               Y(i+1,i) = c;
-        end
-
-        % Implement the boundary conditions
-        Y(1,1) = 1;
-        Y(1,2) = 0;
-        Y(end,end-1) = 0;
-        Y(end,end) = 1;
-
-        % Solve the eigenvalue problem
-        [A B] = eig(Y);
+        % Solve the Khon-Sham equation and get the eigenvalues and the
+        % eigenvectors
+        [A B] = solveKS(pot, x);
 
         % Get the eigenvalues
         e = (diag(B));
 
         % Find index of the minimal eigenvalue
-        index = find(e == min(e));
+        index = min(find(e == min(e)));
 
-        % 
+        % The new radial wave function
         U0 = A(:,index)';
 
         % Get the minimal eigenvalue in Hartree energy
@@ -84,12 +71,18 @@ for r = 1:20
 
         % Save the solution
         Eold = E;
-
+        
     end
 
-    Energy(r) = E
+    % Save energy and rMax
+    Energy(rMax-rMaxInit+1) = E;
+    RMax(rMax-rMaxInit+1) = rMax; 
     
 end
+
+clf
+plot(Energy);
+axis([1 20 -50 20]);
 
 %%
 
@@ -97,7 +90,7 @@ clc
 clear all
 
 nPointsInit = 501;
-nPointsFinal = 601;
+nPointsFinal = 3001;
 
 % FIND GRIDPOINT-CONVERGENCE 
 for N = nPointsInit:1:nPointsFinal
@@ -136,38 +129,22 @@ for N = nPointsInit:1:nPointsFinal
     while energyDiff > 10^(-3) % [eV]
 
         % Get the single Hartree potential
-        V = getVSH(N, rMax, nRelax, U0);
+        V = solveVSH(x, U0);
 
-        % Construct a, b and c
-        for i = 1:N
-            a(i) = 1/h^2-2/x(i)+V(i);
-        end
-        b = - 1/(2*h^2);
-        c = - 1/(2*h^2);
+        % Define the potential
+        pot = -2./x+V;
 
-        % Construct the solution
-        for i = 1:N-1
-               Y(i,i) = a(i);
-               Y(i,i+1) = b;
-               Y(i+1,i) = c;
-        end
-
-        % Implement the boundary conditions
-        Y(1,1) = 1;
-        Y(1,2) = 0;
-        Y(end,end-1) = 0;
-        Y(end,end) = 1;
-
-        % Solve the eigenvalue problem
-        [A B] = eig(Y);
+        % Solve the Khon-Sham equation and get the eigenvalues and the
+        % eigenvectors
+        [A B] = solveKS(pot, x);
 
         % Get the eigenvalues
         e = (diag(B));
 
         % Find index of the minimal eigenvalue
         index = min(find(e == min(e)));
-        
-        % 
+
+        % The new radial wave function
         U0 = A(:,index)';
 
         % Get the minimal eigenvalue in Hartree energy
@@ -219,7 +196,6 @@ U0 = (exp(-alpha(1)*x.^2).*C(1) + exp(-alpha(2)*x.^2).*C(2) + ...
 
 % Normalise U0 4pi int(r^2U0^2) = 1  
 U0 = U0/sqrt(trapz(4*pi.*x.^2.*U0.^2));
-
 
 % Length between two points
 h = rMax/(N-1);
