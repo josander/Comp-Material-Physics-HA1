@@ -40,9 +40,9 @@ for rMax = rMaxInit:30
     % Iterate until the convergence condition; the maximal difference in the
     % solution is smaller or equal to 10^-6
     while energyDiff > 10^(-3) % [eV]
-
+        
         % Get the single Hartree potential
-        V = getVSH(N, rMax, nRelax, U0);
+        V = solveVSH(x, U0);
 
         % Define the potential
         pot = -2./x+V;
@@ -55,9 +55,9 @@ for rMax = rMaxInit:30
         e = (diag(B));
 
         % Find index of the minimal eigenvalue
-        index = find(e == min(e));
+        index = min(find(e == min(e)));
 
-        % 
+        % The new radial wave function
         U0 = A(:,index)';
 
         % Get the minimal eigenvalue in Hartree energy
@@ -67,11 +67,11 @@ for rMax = rMaxInit:30
         E = 27.211396132*minEig;
 
         % Calculate the new energy difference
-        energyDiff = abs(Eold - E);
+        energyDiff = abs(Eold - E)
 
         % Save the solution
         Eold = E;
-
+        
     end
 
     % Save energy and rMax
@@ -129,7 +129,7 @@ for N = nPointsInit:1:nPointsFinal
     while energyDiff > 10^(-3) % [eV]
 
         % Get the single Hartree potential
-        V = getVSH(N, rMax, nRelax, U0);
+        V = solveVSH(x, U0);
 
         % Define the potential
         pot = -2./x+V;
@@ -143,8 +143,8 @@ for N = nPointsInit:1:nPointsFinal
 
         % Find index of the minimal eigenvalue
         index = min(find(e == min(e)));
-        
-        % 
+
+        % The new radial wave function
         U0 = A(:,index)';
 
         % Get the minimal eigenvalue in Hartree energy
