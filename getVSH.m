@@ -6,7 +6,7 @@ u_sq = zeros(1,N);
 
 h = rMax/(N);
 
-% psi = psi/sqrt(trapz(4*pi.*x.^2.*psi.^2));
+psi = psi/sqrt(trapz(4*pi.*x.^2.*psi.^2));
 % 
 % A = 2*pi.*x.*psi.^2.*h^2;
 % 
@@ -31,7 +31,7 @@ for m = 1:nRelax
     % Loop through the coordinates and calculate new solution
     % Y(0) = Y(N) = 0
     for i = 2:N+1
-        Y(i) = u_sq(i-1) + 0.5*Y(i+1) + 0.5*Y(i-1);
+        Y(i) = u_sq(i) + 0.5*Y(i+1) + 0.5*Y(i-1);
     end
 
 end
