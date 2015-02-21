@@ -41,6 +41,8 @@ for m = 1:nIterations
 
 end
 
+save Task2.mat
+
 
 %% Plot the Hartree potentials
 
@@ -55,19 +57,17 @@ plot(x(2:end), V(x(2:end)),'.');
 hold on
 plot( x(2:end), Vsh,'--', 'MarkerSize', 12, 'Color', 'red')
 
-
 set(gcf,'renderer','painters','PaperPosition',[0 0 6 3]);
 X = xlabel('Distance from the nucleus r [$a_0$]','Interpreter','latex', 'fontsize', 12);
-%y = ylabel('PDF [1/$a_0$]','Interpreter','latex', 'fontsize', 12);    
+y = ylabel('Electron potential [Hartree/$a_0$]','Interpreter','latex', 'fontsize', 12);    
 
 title('Electron potential in hydrogen','Interpreter','latex', 'fontsize', 14);
-
-%set(y, 'Units', 'Normalized', 'Position', [-0.1, 0.5, 0]);
+set(y, 'Units', 'Normalized', 'Position', [-0.1, 0.5, 0]);
+set(X, 'Units', 'Normalized', 'Position', [0.5, -0.06, 0]);
 
 l = legend('Analytic Hartree potential $V_H$','Numerical single Hartree potential $V_{sH}$');
-plotTickLatex2D
-set(X, 'Units', 'Normalized', 'Position', [0.5, -0.06, 0]);
 set(l,'Interpreter','latex')
+
 plotTickLatex2D
 print(gcf,'-depsc2','task2.eps')
 

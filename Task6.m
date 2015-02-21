@@ -79,6 +79,8 @@ Energy = E
 
 waveFuncTask6 = A(:,index)'./x;
 
+save Task6.mat
+
 %% Plot the wave functions
 
 clf

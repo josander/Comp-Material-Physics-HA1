@@ -80,6 +80,7 @@ for rMax = rMaxInit:dr:rMaxFinal
     
 end
 
+save Task4rMax.mat
 
 %% Plot the energies with respect to rMax
 clf
@@ -143,7 +144,7 @@ for N = nPointsInit:dn:nPointsFinal
 
         % Get the single Hartree potential
         Vsh = solveVSH(x, U0);
-set(gcf,'renderer','painters','PaperPosition',[0 0 6 3]);
+
         % Define the potential
         pot = -2./x+Vsh;
 
@@ -180,6 +181,8 @@ set(gcf,'renderer','painters','PaperPosition',[0 0 6 3]);
     N
     
 end
+
+save Task4gridPoints.mat
 
 %% Plot the different energies with respect to the number of gridpoints
 
@@ -271,6 +274,8 @@ end
 
 Energy = E
 waveFuncTask4 = A(:,index)'./x;
+
+save Task4.mat
 
 %% Plot the wave functions
 
