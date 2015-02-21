@@ -199,7 +199,7 @@ plot(1:20,Energy)
 clc
 
 % Cutoff radius
-rMax = 10;
+rMax = 30;
 
 % Number of points
 N = 2001; 
