@@ -29,12 +29,6 @@ for rMax = rMaxInit:dr:rMaxFinal
     % Length between two points
     h = rMax/(N-1);
 
-    % Initialise a matrix with zeros
-    Y = zeros(N,N);
-
-    % Number of relaxations for the single Hartree potential
-    nRelax = 5000;
-
     % Variable to keep track of the energy difference
     energyDiff = 1;
     Eold = 0;
@@ -44,10 +38,10 @@ for rMax = rMaxInit:dr:rMaxFinal
     while energyDiff > 10^(-3) % [eV]
         
         % Get the single Hartree potential
-        V = solveVSH(x, U0);
+        Vsh = solveVSH(x, U0);
 
         % Define the potential
-        pot = -2./x+V;
+        pot = -2./x+Vsh;
 
         % Solve the Khon-Sham equation and get the eigenvalues and the
         % eigenvectors
@@ -95,24 +89,22 @@ plot(RMax,Energy);
 clc
 clear all
 
-nPointsInit = 501;
-nPointsFinal = 3001;
+nPointsInit = 101;
+nPointsFinal = 2001;
 dn = 100;
+
 
 % FIND GRIDPOINT-CONVERGENCE 
 for N = nPointsInit:dn:nPointsFinal
     
     % Cutoff radius
     rMax = 10;
+    
+    % Grid density
+    h = rMax/(N-1);
 
     % Radial, discetizised points 
     x = linspace(10^(-9),rMax, N);
-
-    % Coefficients of wave function from task 1
-    C = [-0.146916049461378, -0.393060020070374, -0.411115799349951, -0.261968242091914];
-    
-    % Declaration of alpha
-    alpha = [0.297104, 1.236745, 5.749982, 38.216677];
 
     % Initialise an array with zeros
     U0 = exp(-alpha(1)*x.^2).*C(1) + exp(-alpha(2)*x.^2).*C(2) + ...
@@ -120,12 +112,6 @@ for N = nPointsInit:dn:nPointsFinal
 
     % Length between two points
     h = rMax/(N-1);
-
-    % Initialise a matrix with zeros
-    Y = zeros(N,N);
-
-    % Number of relaxations for the single Hartree potential
-    nRelax = 5000;
 
     % Variable to keep track of the energy difference
     energyDiff = 1;
@@ -136,10 +122,10 @@ for N = nPointsInit:dn:nPointsFinal
     while energyDiff > 10^(-3) % [eV]
 
         % Get the single Hartree potential
-        V = solveVSH(x, U0);
+        Vsh = solveVSH(x, U0);
 
         % Define the potential
-        pot = -2./x+V;
+        pot = -2./x+Vsh;
 
         % Solve the Khon-Sham equation and get the eigenvalues and the
         % eigenvectors
@@ -169,16 +155,16 @@ for N = nPointsInit:dn:nPointsFinal
     end
 
     Energy((N-nPointsInit)/dn+1) = E;
-    gridSize((N-nPointsInit)/dn+1) = N;
+    gridDens((N-nPointsInit)/dn+1) = h;
     
-    N
+    h
     
 end
 
 %% Plot the different energies with respect to the number of gridpoints
 
 clf
-plot(gridSize,Energy,'.')
+plot(gridDens,Energy,'.')
 
 %%
 
@@ -224,10 +210,10 @@ Eold = 0;
 while energyDiff > 10^(-8) % [eV]
 
     % Get the single Hartree potential
-    V = solveVSH(x, U0);
+    Vsh = solveVSH(x, U0);
     
     % Define the potential
-    pot = -2./x+V;
+    pot = -2./x+Vsh;
     
     % Solve the Khon-Sham equation and get the eigenvalues and the
     % eigenvectors
