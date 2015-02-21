@@ -2,16 +2,18 @@
 
 clc
 
-rMaxInit = 5;
-rMaxFinal = 50;
-dr = 2;
+rMaxInit = 1;
+rMaxFinal = 20;
+dr = 1;
+
+h = 0.005;
 
 
 % FIND rMax-CONVERGENCE 
 for rMax = rMaxInit:dr:rMaxFinal
     
     % Number of grid spaces
-    N = 2001; 
+    N = 1 + rMax/h; 
 
     % Radial, discetizised points 
     x = linspace(10^(-9),rMax, N);
