@@ -217,6 +217,10 @@ alpha = [0.297104, 1.236745, 5.749982, 38.216677];
 U0 = (exp(-alpha(1)*x.^2).*C(1) + exp(-alpha(2)*x.^2).*C(2) + ...
     exp(-alpha(3)*x.^2).*C(3)+ exp(-alpha(4)*x.^2).*C(4)).*x;
 
+% Normalise U0 4pi int(r^2U0^2) = 1  
+U0 = U0/sqrt(trapz(4*pi.*x.^2.*U0.^2));
+
+
 % Length between two points
 h = rMax/(N-1);
 
@@ -232,10 +236,10 @@ Eold = 0;
 
 % Iterate until the convergence condition; the maximal difference in the
 % solution is smaller or equal to 10^-6
-while energyDiff > 10^(-5) % [eV]
+while energyDiff > 10^(-8) % [eV]
 
     % Get the single Hartree potential
-    V = getVSH(N, rMax, nRelax, U0);
+    V = solveVSH(x, U0);
     
     % Define the potential
     pot = -2./x+V;
