@@ -6,7 +6,7 @@ rMaxInit = 5;
 
 
 % FIND rMax-CONVERGENCE 
-for rMax = rMaxInit:30
+for rMax = rMaxInit:10
     
     % Number of grid spaces
     N = 2001; 
@@ -67,7 +67,7 @@ for rMax = rMaxInit:30
         E = 27.211396132*minEig;
 
         % Calculate the new energy difference
-        energyDiff = abs(Eold - E)
+        energyDiff = abs(Eold - E);
 
         % Save the solution
         Eold = E;
@@ -196,7 +196,6 @@ U0 = (exp(-alpha(1)*x.^2).*C(1) + exp(-alpha(2)*x.^2).*C(2) + ...
 
 % Normalise U0 4pi int(r^2U0^2) = 1  
 U0 = U0/sqrt(trapz(4*pi.*x.^2.*U0.^2));
-
 
 % Length between two points
 h = rMax/(N-1);
