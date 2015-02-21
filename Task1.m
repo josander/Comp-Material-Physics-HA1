@@ -73,6 +73,8 @@ E
 disp('Coefficients in wave func:')
 C
 
+save Task1.mat
+
 %% Plot the found wave function
 
 x = linspace(0,5,1000);

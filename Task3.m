@@ -42,6 +42,8 @@ Psi = @(r) 2/(a0^(3/2))*exp(-r/a0);
 
 waveFuncTask3 = abs(A(:,index)/sqrt(h))./x;
 
+save Task3.mat
+
 %% Plot the gound state wave function
 
 clf
