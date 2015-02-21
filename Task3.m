@@ -19,30 +19,11 @@ x = linspace(10^(-9),rMax, N);
 %p length between two points
 h = rMax/(N-1);
 
-% Initialise a matrix with zeros
-Y = zeros(N,N);
+% Define the potential
+pot = -1./x;
 
-% Construct a, b and c
-for i = 1:N
-    a(i) = 1/h^2-1/x(i);
-end
-b = - 1/(2*h^2);
-c = - 1/(2*h^2);
-
-% Construct the Y solution
-for i = 1:N-1
-       Y(i,i) = a(i);
-       Y(i,i+1) = b;
-       Y(i+1,i) = c;
-end
-% Implement the boundary conditions
-Y(1,1) = 1;
-Y(1,2) = 0;
-Y(end,end-1) = 0;
-Y(end,end) = 1;
-
-% Solve the eigenvalue problem
-[A B] = eig(Y);
+% Solve the Khon-Sham equation to get the eigenvalues and the eigenvectors 
+[A B] = solveKS(pot, x);
 
 % Get the eigenvalues
 e = (diag(B));

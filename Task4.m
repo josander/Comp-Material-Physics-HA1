@@ -236,29 +236,13 @@ while energyDiff > 10^(-5) % [eV]
 
     % Get the single Hartree potential
     V = getVSH(N, rMax, nRelax, U0);
-
-    % Construct a, b and c
-    for i = 1:N
-        a(i) = 1/h^2-2/x(i)+V(i);
-    end
-    b = - 1/(2*h^2);
-    c = - 1/(2*h^2);
-
-    % Construct the solution
-    for i = 1:N-1
-           Y(i,i) = a(i);
-           Y(i,i+1) = b;
-           Y(i+1,i) = c;
-    end
-
-    % Implement the boundary conditions
-    Y(1,1) = 1;
-    Y(1,2) = 0;
-    Y(end,end-1) = 0;
-    Y(end,end) = 1;
-
-    % Solve the eigenvalue problem
-    [A B] = eig(Y);
+    
+    % Define the potential
+    pot = -2./x+V;
+    
+    % Solve the Khon-Sham equation and get the eigenvalues and the
+    % eigenvectors
+    [A B] = solveKS(pot, x);
 
     % Get the eigenvalues
     e = (diag(B));
