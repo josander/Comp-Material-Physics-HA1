@@ -3,10 +3,12 @@
 clc
 
 rMaxInit = 5;
+rMaxFinal = 50;
+dr = 2;
 
 
 % FIND rMax-CONVERGENCE 
-for rMax = rMaxInit:10
+for rMax = rMaxInit:dr:rMaxFinal
     
     % Number of grid spaces
     N = 2001; 
@@ -75,14 +77,18 @@ for rMax = rMaxInit:10
     end
 
     % Save energy and rMax
-    Energy(rMax-rMaxInit+1) = E;
-    RMax(rMax-rMaxInit+1) = rMax; 
+    Energy((rMax-rMaxInit)/dr+1) = E;
+    RMax((rMax-rMaxInit)/dr+1) = rMax; 
+    
+    rMax
     
 end
 
+
+%% Plot the energies with respect to rMax
+
 clf
-plot(Energy);
-axis([1 20 -50 20]);
+plot(RMax,Energy);
 
 %%
 
@@ -91,9 +97,10 @@ clear all
 
 nPointsInit = 501;
 nPointsFinal = 3001;
+dn = 100;
 
 % FIND GRIDPOINT-CONVERGENCE 
-for N = nPointsInit:1:nPointsFinal
+for N = nPointsInit:dn:nPointsFinal
     
     % Cutoff radius
     rMax = 10;
@@ -154,22 +161,24 @@ for N = nPointsInit:1:nPointsFinal
         E = 27.211396132*minEig;
 
         % Calculate the new energy difference
-        energyDiff = abs(Eold - E)
+        energyDiff = abs(Eold - E);
 
         % Save the solution
         Eold = E;
 
     end
 
-    Energy((N-nPointsInit)) = E
+    Energy((N-nPointsInit)/dn+1) = E;
+    gridSize((N-nPointsInit)/dn+1) = N;
+    
+    N
     
 end
 
 %% Plot the different energies with respect to the number of gridpoints
 
 clf
-
-plot(1:20,Energy)
+plot(gridSize,Energy,'.')
 
 %%
 
