@@ -268,7 +268,7 @@ while energyDiff > 10^(-5) % [eV]
 end
 
 Energy = E
-waveFunc = A(:,index)'./x;
+waveFuncTask4 = A(:,index)'./x;
 
 %% Plot the wave functions
 
@@ -279,7 +279,7 @@ set(gcf,'renderer','painters','PaperPosition',[0 0 12 8]);
 
 plot(x(2:end),psi_r(2:end)./(x.*psi_r(2)))
 hold on
-plot(x(2:end), waveFunc(2:end)./waveFunc(2),'--', 'MarkerSize', 12, 'Color', 'red');
+plot(x(2:end), waveFuncTask4(2:end)./waveFuncTask4(2),'--', 'MarkerSize', 12, 'Color', 'red');
 
 X = xlabel('Distance from the nucleus r [$a_0$]','Interpreter','latex', 'fontsize', 12);
 y = ylabel('Normalised wave function [-]','Interpreter','latex', 'fontsize', 12);    
@@ -288,7 +288,7 @@ title('Electron potential in hydrogen','Interpreter','latex', 'fontsize', 14);
 set(y, 'Units', 'Normalized', 'Position', [-0.1, 0.5, 0]);
 set(X, 'Units', 'Normalized', 'Position', [0.5, -0.06, 0]);
 
-l = legend('Normalised wave function from Task 1 $\Psi_1/\Psi_1(0)$','Normalised wave function from Task 4 $\Psi_4/\Psi_4(0)$');
+l = legend('Normalised wave function from Task 1 $\Psi_1(r)/\Psi_1(0)$','Normalised wave function from Task 4 $\Psi_4(r)/\Psi_4(0)$');
 set(l,'Interpreter','latex')
 plotTickLatex2D
 

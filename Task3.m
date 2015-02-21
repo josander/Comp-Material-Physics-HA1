@@ -40,26 +40,27 @@ Energy = 27.211396132*minEig
 % Analytic wave function for ground state hydrogen
 Psi = @(r) 2/(a0^(3/2))*exp(-r/a0);
 
+waveFuncTask3 = abs(A(:,index)/sqrt(h))./x;
 
 %% Plot the gound state wave function
 
 clf
 set(gcf,'renderer','painters','PaperPosition',[0 0 6 3]);
-plot(x, Psi(x).*x, 'LineWidth', 2)
+plot(x, Psi(x), 'LineWidth', 2)
 hold on
-plot( x, abs(A(:,index)/sqrt(h)),'.', 'color', 'red')
+plot( x, waveFunkTask3,'.', 'color', 'red')
 axis([0 10 0 0.8]);
 
 X = xlabel('Distance from the nucleus r [$a_0$]','Interpreter','latex', 'fontsize', 12);
-%y = ylabel('PDF [1/$a_0$]','Interpreter','latex', 'fontsize', 12);    
-title('Ground state radial wave function in hydrogen','Interpreter','latex', 'fontsize', 14);
+y = ylabel('Normalised wave functions [-]','Interpreter','latex', 'fontsize', 12);    
+title('Ground state wave function in hydrogen','Interpreter','latex', 'fontsize', 14);
 set(X, 'Units', 'Normalized', 'Position', [0.5, -0.06, 0]);
-%set(y, 'Units', 'Normalized', 'Position', [-0.1, 0.5, 0]);
-l = legend('Analytic wave function','Numerical wave function');
+set(y, 'Units', 'Normalized', 'Position', [-0.1, 0.5, 0]);
+
+l = legend('Analytic wave function $\Psi(r)/\Psi(0)$','Numerical wave function $\Psi(r)/\Psi(0)$');
 set(l,'Interpreter','latex')
 
 plotTickLatex2D
-set(X, 'Units', 'Normalized', 'Position', [0.5, -0.06, 0]);
 
 print(gcf,'-depsc2','task3.eps')
 

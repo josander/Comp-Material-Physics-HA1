@@ -46,7 +46,7 @@ while energyDiff > 10^(-5) % [eV]
     Vx = solveVEx(U0);
     
     % Define the potential
-    pot = -2./x+Vsh+Vx;
+    pot = -2./x+2*Vsh+Vx;
     
     % Solve the Khon-Sham equation and get the eigenvalues and the
     % eigenvectors
@@ -78,3 +78,28 @@ end
 disp('Ground state energy in eV:')
 Energy = E
 
+waveFuncTask5 = A(:,index)'./x;
+
+%% Plot the wave functions
+
+clf
+clc
+
+set(gcf,'renderer','painters','PaperPosition',[0 0 12 8]);
+
+plot(x(2:end),psi_r(2:end)./(x.*psi_r(2)))
+hold on
+plot(x(2:end), waveFuncTask5(2:end)./waveFuncTask5(2),'--', 'MarkerSize', 12, 'Color', 'red');
+
+X = xlabel('Distance from the nucleus r [$a_0$]','Interpreter','latex', 'fontsize', 12);
+y = ylabel('Normalised wave function [-]','Interpreter','latex', 'fontsize', 12);    
+
+title('Electron potential in hydrogen','Interpreter','latex', 'fontsize', 14);
+set(y, 'Units', 'Normalized', 'Position', [-0.1, 0.5, 0]);
+set(X, 'Units', 'Normalized', 'Position', [0.5, -0.06, 0]);
+
+l = legend('Normalised wave function from Task 1 $\Psi_1(r)/\Psi_1(0)$','Normalised wave function from Task 5 $\Psi_5(r)/\Psi_5(0)$');
+set(l,'Interpreter','latex')
+plotTickLatex2D
+
+print(gcf,'-depsc2','task5.eps')
