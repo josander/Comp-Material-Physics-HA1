@@ -185,7 +185,7 @@ plot(gridSize,Energy,'.')
 clc
 
 % Cutoff radius
-rMax = 10;
+rMax = 30;
 
 % Number of points
 N = 2001; 
