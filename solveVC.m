@@ -18,7 +18,7 @@ r_s = (3./(4*pi*2*abs(psi_r).^2)).^(1/3);
 e_c = zeros(1,m); 
 de_c = zeros(1,m);
 
-for i=1:m
+for i=2:m-1
    if r_s(i) < 1
        e_c(i) = A.*log(r_s(i))+B+C.*r_s(i).*log(r_s(i)) +D*r_s(i);
        de_c(i) = (A + C*r_s(i) + D*r_s(i))/r_s(i) + C*log(r_s(i));
