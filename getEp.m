@@ -1,4 +1,4 @@
-function [ Ep ] = getEp( phi_r, c )
+function [ Ep ] = getEp( psi_r, c )
 %GETEP Get epsilon
 %   psi_r : Normalised wavefunction for heilum
 %   c : option, 0 = just e_x, 1 = e_xc
@@ -26,7 +26,10 @@ if c == 1
     end
 end
 
+
 Ep(2:m-1) = -(3/4)*(3*2*abs(psi_r(2:end-1)).^2/pi)^(1/3) + e_c;
 Ep(m) = 0;
+
+
 end
 

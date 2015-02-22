@@ -25,11 +25,7 @@ for i=2:m-1
    else
        e_c(i) = gamma./(1 + beta1*sqrt(r_s(i)) + beta2*r_s(i));
        de_c(i) = -gamma.*(beta1.*(1./2*sqrt(r_s(i))) + beta2)/(1 + beta1*sqrt(r_s(i)) + beta2*r_s(i)).^2;
-   end
-
-       
-       
-    
+   end    
 end
 
 

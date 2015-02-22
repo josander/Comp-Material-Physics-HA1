@@ -4,12 +4,10 @@ clc
 clear all
 
 % Cutoff radius
-rMax = 15;
+rMax = 10;
 
 % Number of points
-
-N = 5001; 
-
+N = 1001; 
 
 % Radial, discetizised points 
 x = linspace(10^(-9),rMax, N);
@@ -80,14 +78,25 @@ while energyDiff > 10^(-5) % [eV]
 
 end
 
+% Get exchange-correlation potential
+Vxc = Vx + Vc;
+
+% Get the function u
+u = sqrt(4*pi)*x.*psi_r;
+
+% Get eigenvalue of exchange-correlation function
+epsilonXC = getEp(psi_r, 1)
+
+% Get ground state energy in Hartree
+Energy0 = 2*minEig - 2 * trapz(u.^2.*(Vsh + Vxc - epsilonXC))
+
 % Energy in eV
-Energy = E
+EnergyEV = Energy0*27.211396132
 
-% Energy in Eh
-EnergyHartree = minEig;
-
+% Save this wave function
 waveFuncTask6 = A(:,index)'./x;
 
+% Save all variables
 save Task6.mat
 
 %% Plot the wave functions
@@ -109,7 +118,7 @@ plot(x(2:end), waveFuncTask4(2:end)./waveFuncTask4(2),'r--', 'LineWidth', 1);
 hold on
 plot(x(2:end), waveFuncTask5(2:end)./waveFuncTask5(2),'g-.', 'LineWidth', 1);
 hold on
-plot(x(2:end), waveFuncTask6(2:end)./waveFuncTask6(2),'b', 'LineWidth', 1);
+plot(x(2:end), waveFuncTask6(2:end)./waveFuncTask6(2),'m', 'LineWidth', 1);
 axis([0 5 0 1]);
 
 plotTickLatex2D

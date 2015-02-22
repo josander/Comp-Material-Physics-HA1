@@ -4,10 +4,10 @@ clc
 clear all
 
 % Cutoff radius
-rMax = 15;
+rMax = 10;
 
 % Number of points
-N = 5001; 
+N = 1001; 
 
 % Radial, discetizised points 
 x = linspace(10^(-9),rMax, N);
@@ -75,11 +75,17 @@ while energyDiff > 10^(-5) % [eV]
 
 end
 
-% Energy in eV
-Energy = E
+% Get the function u
+u = sqrt(4*pi)*x.*psi_r;
 
-% Energy in Eh
-EnergyHartree = minEig;
+% Get eigenvalue of exchange function
+epsilonX = getEp(psi_r, 0)
+
+% Get ground state energy in Hartree
+Energy0 = 2*minEig - 2 * trapz(u.^2.*(Vsh + Vx - epsilonX))
+
+% Energy in eV
+EnergyEV = Energy0*27.211396132
 
 % Get wave function
 waveFuncTask5 = A(:,index)'./x;
