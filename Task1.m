@@ -62,16 +62,14 @@ while energyDiff > 10^(-6) % [eV]
 
 end
 
-% Print the results
-disp('The ground state energy in Hartree:');
-E
-
-% Get energy in eV
-E = 27.211396132*E;
 
 % Print the results
 disp('The ground state energy in eV:');
 E
+
+% Print the results
+disp('The ground state energy in Hartree:');
+E = E/27.211396132
 
 disp('Coefficients in wave func:')
 C
