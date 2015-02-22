@@ -32,6 +32,7 @@ for i=1:m
     
 end
 
+
 VC = e_c + (-1.*(3./4*pi.*r_s).^(-1/3)/(4*pi.*r_s.^4))*de_c; % e_c + de_c*(n*dr_s/dn) 
 
 
