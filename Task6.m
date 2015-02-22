@@ -103,24 +103,25 @@ set(gcf,'renderer','painters','PaperPosition',[0 0 12 8]);
 
 psi = psi_r./x;
 
-plot(x(2:end),psi(2:end)./psi(2), 'LineWidth', 1)
+plot(x(2:end),psi(2:end)./psi(2),'-', 'LineWidth', 1)
 hold on
-plot(x(2:end), waveFuncTask4(2:end)./waveFuncTask4(2),'--', 'LineWidth', 1, 'Color', 'red');
+plot(x(2:end), waveFuncTask4(2:end)./waveFuncTask4(2),'r--', 'LineWidth', 1);
 hold on
-plot(x(2:end), waveFuncTask5(2:end)./waveFuncTask5(2),'-.-', 'LineWidth', 1, 'Color', 'green');
+plot(x(2:end), waveFuncTask5(2:end)./waveFuncTask5(2),'g-.', 'LineWidth', 1);
 hold on
-plot(x(2:end), waveFuncTask6(2:end)./waveFuncTask6(2),'-.-', 'LineWidth', 1, 'Color', 'red');
+plot(x(2:end), waveFuncTask6(2:end)./waveFuncTask6(2),'b', 'LineWidth', 1);
 axis([0 5 0 1]);
+
+plotTickLatex2D
 
 X = xlabel('Distance from the nucleus r [$a_0$]','Interpreter','latex', 'fontsize', 12);
 y = ylabel('Normalised wave function [-]','Interpreter','latex', 'fontsize', 12);    
 
-plotTickLatex2D
 title('Electron potential in hydrogen','Interpreter','latex', 'fontsize', 14);
 set(y, 'Units', 'Normalized', 'Position', [-0.09, 0.5, 0]);
 set(X, 'Units', 'Normalized', 'Position', [0.5, -0.065, 0]);
 
-l = legend('Wave function, Task 1 $\Psi_1(r)/\Psi_1(0)$','Wave function, Task 4 $\Psi_4(r)/\Psi_4(0)$','Wave function, Task 5 $\Psi_5(r)/\Psi_5(0)$','Wave function, Task 5 $\Psi_6(r)/\Psi_6(0)$');
+l = legend('Wave function, Task 1 $\Psi_1(r)/\Psi_1(0)$','Wave function, Task 4 $\Psi_4(r)/\Psi_4(0)$','Wave function, Task 5 $\Psi_5(r)/\Psi_5(0)$','Wave function, Task 6 $\Psi_6(r)/\Psi_6(0)$');
 set(l,'Interpreter','latex')
 
 print(gcf,'-depsc2','task6.eps')
