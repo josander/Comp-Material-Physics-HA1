@@ -57,6 +57,9 @@ while energyDiff > 10^(-5) % [eV]
     
     % The new radial wave function
     psi_r = A(:,index)';
+    
+    % Normalise psi_r : 4pi int(r^2U0^2) = 1  
+    psi_r = psi_r/sqrt(trapz(4*pi.*x.^2.*psi_r.^2));
 
     % Get the minimal eigenvalue in Hartree energy
     minEig = e(index);

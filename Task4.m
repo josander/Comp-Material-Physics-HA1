@@ -25,8 +25,12 @@ for rMax = rMaxInit:dr:rMaxFinal
     alpha = [0.297104, 1.236745, 5.749982, 38.216677];
 
     % Initialise an array with zeros
-    psi_r = exp(-alpha(1)*x.^2).*C(1) + exp(-alpha(2)*x.^2).*C(2) + ...
-        exp(-alpha(3)*x.^2).*C(3)+ exp(-alpha(4)*x.^2).*C(4);
+    psi_r = (exp(-alpha(1)*x.^2).*C(1) + exp(-alpha(2)*x.^2).*C(2) + ...
+        exp(-alpha(3)*x.^2).*C(3)+ exp(-alpha(4)*x.^2).*C(4)).*x;
+    
+    % Normalise psi_r : 4pi int(r^2U0^2) = 1  
+    psi_r = psi_r/sqrt(trapz(4*pi.*x.^2.*psi_r.^2));
+
 
     % Length between two points
     h = rMax/(N-1);
@@ -57,6 +61,10 @@ for rMax = rMaxInit:dr:rMaxFinal
 
         % The new radial wave function
         psi_r = A(:,index)';
+        
+        % Normalise psi_r : 4pi int(r^2U0^2) = 1  
+        psi_r = psi_r/sqrt(trapz(4*pi.*x.^2.*psi_r.^2));
+
 
         % Get the minimal eigenvalue in Hartree energy
         minEig = e(index);
@@ -105,7 +113,7 @@ clc
 clear all
 
 nPointsInit = 101;
-nPointsFinal = 4001;
+nPointsFinal = 4000;
 dn = 50;
 
 
@@ -128,8 +136,11 @@ for N = nPointsInit:dn:nPointsFinal
     alpha = [0.297104, 1.236745, 5.749982, 38.216677];
 
     % Initialise an array with zeros
-    psi_r = exp(-alpha(1)*x.^2).*C(1) + exp(-alpha(2)*x.^2).*C(2) + ...
-        exp(-alpha(3)*x.^2).*C(3)+ exp(-alpha(4)*x.^2).*C(4);
+    psi_r = (exp(-alpha(1)*x.^2).*C(1) + exp(-alpha(2)*x.^2).*C(2) + ...
+        exp(-alpha(3)*x.^2).*C(3)+ exp(-alpha(4)*x.^2).*C(4)).*x;
+    
+    % Normalise psi_r : 4pi int(r^2U0^2) = 1  
+    psi_r = psi_r/sqrt(trapz(4*pi.*x.^2.*psi_r.^2));
 
     % Length between two points
     h = rMax/(N-1);
@@ -160,6 +171,9 @@ for N = nPointsInit:dn:nPointsFinal
 
         % The new radial wave function
         psi_r = A(:,index)';
+        
+        % Normalise psi_r : 4pi int(r^2U0^2) = 1  
+        psi_r = psi_r/sqrt(trapz(4*pi.*x.^2.*psi_r.^2));
 
         % Get the minimal eigenvalue in Hartree energy
         minEig = e(index);
@@ -261,6 +275,9 @@ while energyDiff > 10^(-5) % [eV]
     
     % The new radial wave function
     psi_r = A(:,index)';
+    
+    % Normalise psi_r : 4pi int(r^2U0^2) = 1  
+    psi_r = psi_r/sqrt(trapz(4*pi.*x.^2.*psi_r.^2));
 
     % Get the minimal eigenvalue in Hartree energy
     minEig = e(index);
