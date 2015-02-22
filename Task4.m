@@ -27,9 +27,10 @@ for rMax = rMaxInit:dr:rMaxFinal
     % Initialise an array with zeros
     psi_r = (exp(-alpha(1)*x.^2).*C(1) + exp(-alpha(2)*x.^2).*C(2) + ...
         exp(-alpha(3)*x.^2).*C(3)+ exp(-alpha(4)*x.^2).*C(4)).*x;
-    
-    % Normalise U0 4pi int(r^2U0^2) = 1  
+
+    % Normalise psi_r : 4pi int(r^2U0^2) = 1  
     psi_r = psi_r/sqrt(trapz(4*pi.*x.^2.*psi_r.^2));
+
 
     % Length between two points
     h = rMax/(N-1);
@@ -61,7 +62,7 @@ for rMax = rMaxInit:dr:rMaxFinal
         % The new radial wave function
         psi_r = A(:,index)';
         
-        % Normalise U0 4pi int(r^2U0^2) = 1  
+        % Normalise psi_r : 4pi int(r^2U0^2) = 1  
         psi_r = psi_r/sqrt(trapz(4*pi.*x.^2.*psi_r.^2));
 
         % Get the minimal eigenvalue in Hartree energy
@@ -112,7 +113,7 @@ clc
 clear all
 
 nPointsInit = 101;
-nPointsFinal = 4001;
+nPointsFinal = 4000;
 dn = 50;
 
 
@@ -134,11 +135,12 @@ for N = nPointsInit:dn:nPointsFinal
     % Declaration of alpha
     alpha = [0.297104, 1.236745, 5.749982, 38.216677];
 
-    % Initialise an array with zeros
-    psi_r = exp(-alpha(1)*x.^2).*C(1) + exp(-alpha(2)*x.^2).*C(2) + ...
-        exp(-alpha(3)*x.^2).*C(3)+ exp(-alpha(4)*x.^2).*C(4);
+    % Initialise psi_r
+    psi_r =( exp(-alpha(1)*x.^2).*C(1) + exp(-alpha(2)*x.^2).*C(2) + ...
+        exp(-alpha(3)*x.^2).*C(3)+ exp(-alpha(4)*x.^2).*C(4)).*x;
     
-    % Normalise U0 4pi int(r^2U0^2) = 1  
+
+    % Normalise psi_r : 4pi int(r^2U0^2) = 1  
     psi_r = psi_r/sqrt(trapz(4*pi.*x.^2.*psi_r.^2));
 
     % Length between two points
@@ -170,8 +172,8 @@ for N = nPointsInit:dn:nPointsFinal
 
         % The new radial wave function
         psi_r = A(:,index)';
-        
-        % Normalise U0 4pi int(r^2U0^2) = 1  
+
+        % Normalise psi_r : 4pi int(r^2U0^2) = 1  
         psi_r = psi_r/sqrt(trapz(4*pi.*x.^2.*psi_r.^2));
 
         % Get the minimal eigenvalue in Hartree energy
@@ -252,7 +254,7 @@ h = rMax/(N-1);
 energyDiff = 1;
 Eold = 0;
 
-% Iterate until the convergence condition; the maximal denergy difference
+% Iterate until the convergence condition; the maximal energy difference
 % 10^-5
 while energyDiff > 10^(-5) % [eV]
 
@@ -274,6 +276,9 @@ while energyDiff > 10^(-5) % [eV]
     
     % The new radial wave function
     psi_r = A(:,index)';
+    
+    % Normalise psi_r : 4pi int(r^2U0^2) = 1  
+    psi_r = psi_r/sqrt(trapz(4*pi.*x.^2.*psi_r.^2));
 
     % Get the minimal eigenvalue in Hartree energy
     minEig = e(index);
