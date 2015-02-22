@@ -50,6 +50,9 @@ while energyDiff > 10^(-6) % [eV]
 
     % Get the energy of the state
     E  = getEG(h, C, Q);
+    
+    % Get energy in eV
+    E = 27.211396132*E;
 
     % Calculate the new energy difference
     energyDiff = abs(Eold - E);

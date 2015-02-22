@@ -53,21 +53,21 @@ set(gcf,'renderer','painters','PaperPosition',[0 0 12 8]);
 
 V = @(r) 1./r - (1 + 1./r) .* exp(-2.*r);
 Vsh = Y(2:end)'./x(2:end) + 1/rMax;
-plot(x(2:end), V(x(2:end)),'.');
-hold on
-plot( x(2:end), Vsh,'--', 'MarkerSize', 12, 'Color', 'red')
 
-set(gcf,'renderer','painters','PaperPosition',[0 0 6 3]);
+plot(x(2:end), V(x(2:end)),'LineWidth', 1);
+hold on
+plot( x(2:end), Vsh,'--', 'LineWidth', 1, 'Color', 'red')
+plotTickLatex2D
+
 X = xlabel('Distance from the nucleus r [$a_0$]','Interpreter','latex', 'fontsize', 12);
-y = ylabel('Electron potential [Hartree/$a_0$]','Interpreter','latex', 'fontsize', 12);    
+y = ylabel('Electron potential [$E_h$]','Interpreter','latex', 'fontsize', 12);    
 
 title('Electron potential in hydrogen','Interpreter','latex', 'fontsize', 14);
-set(y, 'Units', 'Normalized', 'Position', [-0.1, 0.5, 0]);
-set(X, 'Units', 'Normalized', 'Position', [0.5, -0.06, 0]);
+set(y, 'Units', 'Normalized', 'Position', [-0.09, 0.5, 0]);
+set(X, 'Units', 'Normalized', 'Position', [0.5, -0.065, 0]);
 
 l = legend('Analytic Hartree potential $V_H$','Numerical single Hartree potential $V_{sH}$');
 set(l,'Interpreter','latex')
 
-plotTickLatex2D
 print(gcf,'-depsc2','task2.eps')
 

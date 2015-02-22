@@ -190,17 +190,18 @@ clf
 clc
 
 set(gcf,'renderer','painters','PaperPosition',[0 0 12 8]);
+
+plot(gridSize,Energy,'-', 'Color', 'red', 'LineWidth', 1);
+axis([0 4000 -55 -15]);
 plotTickLatex2D
 
-plot(gridSize,Energy,'-', 'MarkerSize', 14, 'Color', 'red');
-axis([0 4000 -55 -15]);
-
-X = xlabel('Grid size  N [$a_0$]','Interpreter','latex', 'fontsize', 12);
+X = xlabel('Grid points  N [-]','Interpreter','latex', 'fontsize', 12);
 y = ylabel('Energy [eV]','Interpreter','latex', 'fontsize', 12);    
 
 title('Ground state energy for Helium','Interpreter','latex', 'fontsize', 14);
-set(y, 'Units', 'Normalized', 'Position', [-0.1, 0.5, 0]);
-set(X, 'Units', 'Normalized', 'Position', [0.5, -0.06, 0]);
+set(y, 'Units', 'Normalized', 'Position', [-0.09, 0.5, 0]);
+set(X, 'Units', 'Normalized', 'Position', [0.5, -0.065, 0]);
+
 
 print(gcf,'-depsc2','convGrid.eps')
 
@@ -274,9 +275,16 @@ while energyDiff > 10^(-5) % [eV]
 
 end
 
+% Energy in eV
 Energy = E
+
+% Energy in Eh
+EnergyHartree = minEig;
+
+% Get wave function
 waveFuncTask4 = A(:,index)'./x;
 
+% Save all variables
 save Task4.mat
 
 %% Plot the wave functions
@@ -284,21 +292,25 @@ save Task4.mat
 clf
 clc
 
+psi = psi_r./x;
+
 set(gcf,'renderer','painters','PaperPosition',[0 0 12 8]);
 
-plot(x(2:end),psi_r(2:end)./(x.*psi_r(2)))
+plot(x(2:end),psi(2:end)/psi(2), 'LineWidth', 1)
 hold on
-plot(x(2:end), waveFuncTask4(2:end)./waveFuncTask4(2),'--', 'MarkerSize', 12, 'Color', 'red');
+plot(x(2:end), waveFuncTask4(2:end)./waveFuncTask4(2),'--', 'LineWidth', 1, 'Color', 'red');
+axis([0 5 0 1]);
 
 X = xlabel('Distance from the nucleus r [$a_0$]','Interpreter','latex', 'fontsize', 12);
 y = ylabel('Normalised wave function [-]','Interpreter','latex', 'fontsize', 12);    
 
-title('Electron potential in hydrogen','Interpreter','latex', 'fontsize', 14);
-set(y, 'Units', 'Normalized', 'Position', [-0.1, 0.5, 0]);
-set(X, 'Units', 'Normalized', 'Position', [0.5, -0.06, 0]);
-
-l = legend('Normalised wave function from Task 1 $\Psi_1(r)/\Psi_1(0)$','Normalised wave function from Task 4 $\Psi_4(r)/\Psi_4(0)$');
-set(l,'Interpreter','latex')
 plotTickLatex2D
+title('Electron potential in hydrogen','Interpreter','latex', 'fontsize', 14);
+set(y, 'Units', 'Normalized', 'Position', [-0.09, 0.5, 0]);
+set(X, 'Units', 'Normalized', 'Position', [0.5, -0.065, 0]);
+
+l = legend('Wave function, Task 1 $\Psi_1(r)/\Psi_1(0)$','Wave function, Task 4 $\Psi_4(r)/\Psi_4(0)$');
+set(l,'Interpreter','latex')
+
 
 print(gcf,'-depsc2','task4.eps')
