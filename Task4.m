@@ -25,8 +25,11 @@ for rMax = rMaxInit:dr:rMaxFinal
     alpha = [0.297104, 1.236745, 5.749982, 38.216677];
 
     % Initialise an array with zeros
-    psi_r = exp(-alpha(1)*x.^2).*C(1) + exp(-alpha(2)*x.^2).*C(2) + ...
-        exp(-alpha(3)*x.^2).*C(3)+ exp(-alpha(4)*x.^2).*C(4);
+    psi_r = (exp(-alpha(1)*x.^2).*C(1) + exp(-alpha(2)*x.^2).*C(2) + ...
+        exp(-alpha(3)*x.^2).*C(3)+ exp(-alpha(4)*x.^2).*C(4)).*x;
+    
+    % Normalise U0 4pi int(r^2U0^2) = 1  
+    psi_r = psi_r/sqrt(trapz(4*pi.*x.^2.*psi_r.^2));
 
     % Length between two points
     h = rMax/(N-1);
@@ -57,6 +60,9 @@ for rMax = rMaxInit:dr:rMaxFinal
 
         % The new radial wave function
         psi_r = A(:,index)';
+        
+        % Normalise U0 4pi int(r^2U0^2) = 1  
+        psi_r = psi_r/sqrt(trapz(4*pi.*x.^2.*psi_r.^2));
 
         % Get the minimal eigenvalue in Hartree energy
         minEig = e(index);
@@ -80,23 +86,24 @@ for rMax = rMaxInit:dr:rMaxFinal
     
 end
 
-save Task4rMax.mat
+save Task4rMax2.mat
 
 %% Plot the energies with respect to rMax
 clf
 clc
 
-set(gcf,'renderer','painters','PaperPosition',[0 0 12 8]);
+set(gcf,'renderer','painters','PaperUnits','centimeters','PaperPosition',[0 0 12 8]);
 
 plot(RMax,Energy,'-', 'MarkerSize', 12, 'Color', 'red');
-
-X = xlabel('Cut off radius $r_max$ [$a_0$]','Interpreter','latex', 'fontsize', 12);
+axis([2 20 -55 -35])
+X = xlabel('Cut-off radius $r_{max}$ [$a_0$]','Interpreter','latex', 'fontsize', 12);
 y = ylabel('Ground state energy [eV]','Interpreter','latex', 'fontsize', 12);    
 title('Ground state energy for Helium','Interpreter','latex', 'fontsize', 14);
+plotTickLatex2D
 set(y, 'Units', 'Normalized', 'Position', [-0.1, 0.5, 0]);
 set(X, 'Units', 'Normalized', 'Position', [0.5, -0.06, 0]);
 
-plotTickLatex2D
+
 print(gcf,'-depsc2','convRMax.eps')
 
 %%
@@ -130,6 +137,9 @@ for N = nPointsInit:dn:nPointsFinal
     % Initialise an array with zeros
     psi_r = exp(-alpha(1)*x.^2).*C(1) + exp(-alpha(2)*x.^2).*C(2) + ...
         exp(-alpha(3)*x.^2).*C(3)+ exp(-alpha(4)*x.^2).*C(4);
+    
+    % Normalise U0 4pi int(r^2U0^2) = 1  
+    psi_r = psi_r/sqrt(trapz(4*pi.*x.^2.*psi_r.^2));
 
     % Length between two points
     h = rMax/(N-1);
@@ -160,6 +170,9 @@ for N = nPointsInit:dn:nPointsFinal
 
         % The new radial wave function
         psi_r = A(:,index)';
+        
+        % Normalise U0 4pi int(r^2U0^2) = 1  
+        psi_r = psi_r/sqrt(trapz(4*pi.*x.^2.*psi_r.^2));
 
         % Get the minimal eigenvalue in Hartree energy
         minEig = e(index);

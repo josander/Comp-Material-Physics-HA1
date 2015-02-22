@@ -7,7 +7,7 @@ clc
 rMax = 15;
 
 % Number of points
-N = 2001; 
+N = 4001; 
 
 % Radial, discetizised points 
 x = linspace(10^(-9),rMax, N);
