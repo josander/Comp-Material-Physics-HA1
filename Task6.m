@@ -8,7 +8,7 @@ rMax = 15;
 
 % Number of points
 
-N = 4001; 
+N = 5001; 
 
 
 % Radial, discetizised points 
