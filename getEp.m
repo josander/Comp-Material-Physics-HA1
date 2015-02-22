@@ -4,7 +4,7 @@ function [ Ep ] = getEp( phi_r, c )
 %   c : option, 0 = just e_x, 1 = e_xc
 
 [n m] = size(psi_r);
-e_c = zeros(1,m); 
+e_c = zeros(1,m-2); 
 
 if c == 1
     A = -0.0311;
@@ -17,7 +17,7 @@ if c == 1
     beta2 = 0.3334;
     r_s = (3./(4*pi*2*abs(psi_r).^2)).^(1/3);
 
-    for i=1:m
+    for i=2:m-1
        if r_s(i) < 1
            e_c(i) = A.*log(r_s(i))+B+C.*r_s(i).*log(r_s(i)) +D*r_s(i);
        else
@@ -26,7 +26,7 @@ if c == 1
     end
 end
 
-Ep = -(3/4)*(3*2*abs(psi_r).^2/pi)^(1/3) + e_c;
+Ep = -(3/4)*(3*2*abs(psi_r(2:end-1)).^2/pi)^(1/3) + e_c;
 
 end
 
