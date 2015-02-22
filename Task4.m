@@ -1,10 +1,10 @@
 %% Task 4: Get ground state energy 
-
+clear all
 clc
 
 rMaxInit = 1;
 rMaxFinal = 20;
-dr = 1;
+dr = 0.5;
 
 h = 0.005;
 

@@ -1,4 +1,4 @@
-%% Task 5
+%% Task 6
 
 clear all
 clc
@@ -7,7 +7,7 @@ clc
 rMax = 15;
 
 % Number of points
-N = 5001; 
+N = 2001; 
 
 % Radial, discetizised points 
 x = linspace(10^(-9),rMax, N);
@@ -19,11 +19,11 @@ C = -1*[-0.146916049461378, -0.393060020070374, -0.411115799349951, -0.261968242
 alpha = [0.297104, 1.236745, 5.749982, 38.216677];
 
 % Initialise the wave function with solution from task 1
-U0 = (exp(-alpha(1)*x.^2).*C(1) + exp(-alpha(2)*x.^2).*C(2) + ...
+psi_r = (exp(-alpha(1)*x.^2).*C(1) + exp(-alpha(2)*x.^2).*C(2) + ...
     exp(-alpha(3)*x.^2).*C(3)+ exp(-alpha(4)*x.^2).*C(4)).*x;
 
 % Normalise U0 4pi int(r^2U0^2) = 1  
-U0 = U0/sqrt(trapz(4*pi.*x.^2.*U0.^2));
+psi_r = psi_r/sqrt(trapz(4*pi.*x.^2.*psi_r.^2));
 
 % Length between two points
 h = rMax/(N-1);
@@ -36,13 +36,13 @@ Eold = 0;
 while energyDiff > 10^(-5) % [eV]
 
     % Get the single Hartree potential
-    Vsh = solveVSH(x, U0);
+    Vsh = solveVSH(x, psi_r);
     
     % Get the exchange potential
-    Vx = solveVEx(U0);
+    Vx = solveVEx(psi_r);
     
     % Get the correlation potential
-    Vc = solveVc();
+    Vc = solveVC(psi_r);
     
     % Define the potential
     pot = -2./x+2*Vsh+Vx+Vc;
@@ -58,7 +58,7 @@ while energyDiff > 10^(-5) % [eV]
     index = min(find(e == min(e)));
     
     % The new radial wave function
-    U0 = A(:,index)';
+    psi_r = A(:,index)';
 
     % Get the minimal eigenvalue in Hartree energy
     minEig = e(index);
