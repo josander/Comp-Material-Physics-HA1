@@ -77,7 +77,7 @@ while energyDiff > 10^(-5) % [eV]
     Eold = E;
 
 end
-
+%%
 % Get exchange-correlation potential
 Vxc = Vx + Vc;
 
