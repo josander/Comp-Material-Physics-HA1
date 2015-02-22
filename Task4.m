@@ -239,7 +239,7 @@ h = rMax/(N-1);
 energyDiff = 1;
 Eold = 0;
 
-% Iterate until the convergence condition; the maximal denergy difference
+% Iterate until the convergence condition; the maximal energy difference
 % 10^-5
 while energyDiff > 10^(-5) % [eV]
 

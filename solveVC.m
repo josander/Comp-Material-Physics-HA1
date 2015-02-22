@@ -31,12 +31,6 @@ for i=1:m
        
     
 end
-e_c(1:index-1) = A.*log(r_s(1:index-1))+B+C.*r_s(1:index-1).*log(r_s(1:index-1)) +D*r_s(1:index-1);
-e_c(index:end) = gamma./(1 + beta1*sqrt(r_s(index:end)) + beta2*r_s(index:end));
-
-de_c(1:index-1) = (A + C*r_s(1:index-1) + D*r_s(1:index-1))/r_s(1:index-1) + C*log(r_s(1:index-1));
-de_c(index:end) = -gamma.*(beta1.*(1./2*sqrt(r_s(index:end))) + beta2)/(1 + beta1*sqrt(r_s(index:end)) + beta2*r_s(index:end)).^2;
-
 
 VC = e_c + (-1.*(3./4*pi.*r_s).^(-1/3)/(4*pi.*r_s.^4))*de_c; % e_c + de_c*(n*dr_s/dn) 
 
