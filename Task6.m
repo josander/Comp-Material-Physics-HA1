@@ -86,21 +86,30 @@ save Task6.mat
 clf
 clc
 
+load Task4.mat
+load Task5.mat
+load Task6.mat
+
 set(gcf,'renderer','painters','PaperPosition',[0 0 12 8]);
 
-plot(x(2:end),psi_r(2:end)./(x.*psi_r(2)))
+plot(x(2:end),psi_r(2:end)./(x(2:end).*psi_r(2)))
 hold on
-plot(x(2:end), waveFuncTask6(2:end)./waveFuncTask6(2),'--', 'MarkerSize', 12, 'Color', 'red');
+plot(x(2:end), waveFuncTask4(2:end)./waveFuncTask4(2),'--', 'LineWidth', 1, 'Color', 'red');
+hold on
+plot(x(2:end), waveFuncTask5(2:end)./waveFuncTask5(2),'-.-', 'LineWidth', 1, 'Color', 'green');
+hold on
+plot(x(2:end), waveFuncTask6(2:end)./waveFuncTask6(2),'-.-', 'LineWidth', 1, 'Color', 'red');
+axis([0 5 0 1]);
 
 X = xlabel('Distance from the nucleus r [$a_0$]','Interpreter','latex', 'fontsize', 12);
 y = ylabel('Normalised wave function [-]','Interpreter','latex', 'fontsize', 12);    
 
-title('Electron potential in hydrogen','Interpreter','latex', 'fontsize', 14);
-set(y, 'Units', 'Normalized', 'Position', [-0.1, 0.5, 0]);
-set(X, 'Units', 'Normalized', 'Position', [0.5, -0.06, 0]);
-
-l = legend('Normalised wave function from Task 1 $\Psi_1(r)/\Psi_1(0)$','Normalised wave function from Task 6 $\Psi_6(r)/\Psi_6(0)$');
-set(l,'Interpreter','latex')
 plotTickLatex2D
+title('Electron potential in hydrogen','Interpreter','latex', 'fontsize', 14);
+set(y, 'Units', 'Normalized', 'Position', [-0.09, 0.5, 0]);
+set(X, 'Units', 'Normalized', 'Position', [0.5, -0.065, 0]);
+
+l = legend('Wave function, Task 1 $\Psi_1(r)/\Psi_1(0)$','Wave function, Task 4 $\Psi_4(r)/\Psi_4(0)$','Normalised wave function from Task 5 $\Psi_5(r)/\Psi_5(0)$',,'Normalised wave function from Task 5 $\Psi_6(r)/\Psi_6(0)$');
+set(l,'Interpreter','latex')
 
 print(gcf,'-depsc2','task6.eps')

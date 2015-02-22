@@ -1,6 +1,5 @@
 function [A B] = solveKS(pot, x)
-% Function that solves the Khon-Sham equation. 'pot' is the potentials in 
-% the Hamiltonian except for -nabla/2. 
+% Function that solves the Khon-Sham equation. 'pot' is the potentials in the Hamiltonian except for -nabla/2. 
 
 % Get number of gridpoints
 [M N] = size(x);
