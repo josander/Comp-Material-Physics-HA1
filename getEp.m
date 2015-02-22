@@ -19,15 +19,18 @@ if c == 1
 
     for i=2:m-1
        if r_s(i) < 1
-           e_c(i) = A.*log(r_s(i))+B+C.*r_s(i).*log(r_s(i)) +D*r_s(i);
+           e_c(i-1) = A.*log(r_s(i))+B+C.*r_s(i).*log(r_s(i)) +D*r_s(i);
        else
-           e_c(i) = gamma./(1 + beta1*sqrt(r_s(i)) + beta2*r_s(i)); 
+           e_c(i-1) = gamma./(1 + beta1*sqrt(r_s(i)) + beta2*r_s(i)); 
        end
     end
 end
 
+size(e_c)
 
-Ep(2:m-1) = -(3/4)*(3*2*abs(psi_r(2:end-1)).^2/pi)^(1/3) + e_c;
+m_2 = m-2
+
+Ep(2:m-1) = -(3/4)*(3*2*abs(psi_r(2:end-1)).^2/pi).^(1/3) + e_c;
 Ep(m) = 0;
 
 end
