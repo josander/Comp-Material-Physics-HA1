@@ -113,7 +113,7 @@ clc
 clear all
 
 nPointsInit = 101;
-nPointsFinal = 4000;
+nPointsFinal = 5501;
 dn = 50;
 
 
@@ -189,6 +189,7 @@ for N = nPointsInit:dn:nPointsFinal
         Eold = E;
 
     end
+   
 
     Energy((N-nPointsInit)/dn+1) = E;
     gridSize((N-nPointsInit)/dn+1) = N;
@@ -226,10 +227,10 @@ clc
 clear all
 
 % Cutoff radius
-rMax = 15;
+rMax = 10;
 
 % Number of points
-N = 3001; 
+N = 1001; 
 
 % Radial, discetizised points 
 x = linspace(10^(-9),rMax, N);
@@ -294,11 +295,14 @@ while energyDiff > 10^(-5) % [eV]
 
 end
 
-% Energy in eV
-Energy = E
+% Get the function u
+u = sqrt(4*pi)*x.*psi_r;
 
-% Energy in Eh
-EnergyHartree = minEig;
+% Get ground state energy in Hartree
+Energy0 = 2*minEig - 2 * trapz(u.^2.*Vsh);
+
+% Energy in eV
+EnergyEV = Energy0*27.211396132;
 
 % Get wave function
 waveFuncTask4 = A(:,index)'./x;
