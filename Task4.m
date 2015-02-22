@@ -294,15 +294,15 @@ while energyDiff > 10^(-5) % [eV]
     Eold = E;
 
 end
-
+%%
 % Get the function u
 u = sqrt(4*pi)*x.*psi_r;
 
 % Get ground state energy in Hartree
-Energy0 = 2*minEig - 2 * trapz(u.^2.*Vsh);
+Energy0 = 2*minEig - 2 * trapz(u.^2.*Vsh/2)
 
 % Energy in eV
-EnergyEV = Energy0*27.211396132;
+EnergyEV = Energy0*27.211396132
 
 % Get wave function
 waveFuncTask4 = A(:,index)'./x;
