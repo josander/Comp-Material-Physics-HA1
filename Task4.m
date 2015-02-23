@@ -92,19 +92,21 @@ save Task4rMax2.mat
 clf
 clc
 
+
+
 set(gcf,'renderer','painters','PaperUnits','centimeters','PaperPosition',[0 0 12 8]);
 
-plot(RMax,Eigen,'r-', 'LineWidth', 1);
-axis([2 20 -55 -35])
+plot(RMax,Energy/27.211396132,'r-', 'LineWidth', 1);
+axis([0 20 -2.3 .5])
 X = xlabel('Cutoff radius $r_{max}$ [$a_0$]','Interpreter','latex', 'fontsize', 12);
 y = ylabel('Eigenvalue [$E_h$]','Interpreter','latex', 'fontsize', 12);    
-title('Ground state energy for Helium','Interpreter','latex', 'fontsize', 14);
+title('Convergence with respect to cutoff radius','Interpreter','latex', 'fontsize', 14);
 plotTickLatex2D
 set(y, 'Units', 'Normalized', 'Position', [-0.1, 0.5, 0]);
 set(X, 'Units', 'Normalized', 'Position', [0.5, -0.06, 0]);
 
 
-print(gcf,'-depsc2','convRMax.eps')
+print(gcf,'-depsc2','convRMax.eps') 
 
 %%
 
@@ -112,7 +114,7 @@ clc
 clear all
 
 nPointsInit = 101;
-nPointsFinal = 5501;
+nPointsFinal = 4501;
 dn = 50;
 
 
@@ -179,7 +181,7 @@ for N = nPointsInit:dn:nPointsFinal
         minEig = e(index);
 
         % Get energy in eV
-        %E = 27.211396132*minEig;
+        E = 27.211396132*minEig;
 
         % Calculate the new energy difference
         energyDiff = abs(Eold - E);
@@ -207,13 +209,13 @@ clc
 set(gcf,'renderer','painters','PaperPosition',[0 0 12 8]);
 
 plot(gridSize,Eigen,'-', 'Color', 'red', 'LineWidth', 1);
-axis([0 4000 -55 -15]);
+%axis([0 4000 -55 -15]);
 plotTickLatex2D
 
 X = xlabel('Grid points  N [-]','Interpreter','latex', 'fontsize', 12);
 y = ylabel('Eigenvalue [$E_h$]','Interpreter','latex', 'fontsize', 12);    
 
-title('Ground state energy for Helium','Interpreter','latex', 'fontsize', 14);
+title('Convergence with respect to number of grid points','Interpreter','latex', 'fontsize', 14);
 set(y, 'Units', 'Normalized', 'Position', [-0.09, 0.5, 0]);
 set(X, 'Units', 'Normalized', 'Position', [0.5, -0.065, 0]);
 
@@ -244,9 +246,11 @@ alpha = [0.297104, 1.236745, 5.749982, 38.216677];
 psi_r = (exp(-alpha(1)*x.^2).*C(1) + exp(-alpha(2)*x.^2).*C(2) + ...
     exp(-alpha(3)*x.^2).*C(3)+ exp(-alpha(4)*x.^2).*C(4)).*x;
 
-% Normalise U0 4pi int(r^2U0^2) = 1  
-psi_r = psi_r/sqrt(trapz(4*pi.*x.^2.*psi_r.^2));
+% Get u from psi_r
+u = sqrt(4*pi)*x.*psi_r;
 
+% Normalise u
+u = u/sqrt(trapz(u.^2));
 
 % Length between two points
 h = rMax/(N-1);
@@ -260,7 +264,7 @@ Eold = 0;
 while energyDiff > 10^(-5) % [eV]
 
     % Get the single Hartree potential
-    Vsh = solveVSH(x, psi_r);
+    Vsh = solveVSH(x, u);
     
     % Define the potential
     pot = -2./x+Vsh;
@@ -276,13 +280,13 @@ while energyDiff > 10^(-5) % [eV]
     index = min(find(e == min(e)));
     
     % The new radial wave function
-    psi_r = A(:,index)';
+    u = A(:,index)';
     
-    % Normalise psi_r : 4pi int(r^2U0^2) = 1  
-    psi_r = psi_r/sqrt(trapz(4*pi.*x.^2.*abs(psi_r).^2));
+    % Normalise
+    u = u/sqrt(trapz(u.^2));
 
     % Get the minimal eigenvalue in Hartree energy
-    minEig = e(index)/4;
+    minEig = e(index);
 
     % Get energy in eV
     E = 27.211396132*minEig;
@@ -294,9 +298,6 @@ while energyDiff > 10^(-5) % [eV]
     Eold = E;
 
 end
-
-% Get the function u
-u = sqrt(4*pi)*x.*psi_r;
 
 % Print value of lowest eigenvalue
 minEig = minEig
