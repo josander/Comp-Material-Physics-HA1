@@ -87,6 +87,7 @@ for rMax = rMaxInit:dr:rMaxFinal
     % Energy in eV
     EnergyEV = Energy0*27.211396132;
     
+    % Save energy and rMax vectors to plot
     Energy((rMax-rMaxInit)/dr+1) = EnergyEV;
     RMax((rMax-rMaxInit)/dr+1) = rMax;
     
@@ -184,6 +185,7 @@ for N = nPointsInit:dn:nPointsFinal
     % Energy in eV
     EnergyEV = Energy0*27.211396132;
 
+    % Save energy and grid size vectors to plot them
     Energy((N-nPointsInit)/dn+1) = EnergyEV;
     gridSize((N-nPointsInit)/dn+1) = N;
     
