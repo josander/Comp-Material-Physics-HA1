@@ -23,11 +23,11 @@ h = rMax/(N-1);
 a0 = 1; % Bohr radius
 densConst = a0^(-3)/(pi);
 densFunc = @(r) densConst*exp(-2*r/a0);
-
 diffConst = 2*pi*h^2;
 eDens = densFunc(x(2:end));
 eDens = eDens.*x(2:end)*diffConst;
 
+% Number of relaxations
 nIterations = 5*10^5;
 
 for m = 1:nIterations

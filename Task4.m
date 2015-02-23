@@ -3,8 +3,8 @@
 clear all
 clc
 
-rMaxInit = 5;
-rMaxFinal = 20;
+rMaxInit = 2;
+rMaxFinal = 15;
 dr = 0.5;
 
 h = 0.005;
@@ -271,7 +271,7 @@ while energyDiff > 10^(-5) % [eV]
 end
 
 % Print value of lowest eigenvalue
-minEig = minEig
+minEig
 
 % Get ground state energy in Hartree
 Energy0 = 2*minEig - 2*trapz(x,u.^2.*Vsh/2)

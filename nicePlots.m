@@ -1,5 +1,5 @@
 %% Nice plots
-%% Task 1: Plot the found wave function
+% Task 1: Plot the found wave function
 
 clf
 clc
@@ -10,7 +10,7 @@ x = linspace(0,5,1000);
 Psi = @(r) -1*exp(-alpha(1)*r.^2).*C(1) + exp(-alpha(2)*r.^2).*C(2) + ...
     exp(-alpha(3)*r.^2).*C(3)+ exp(-alpha(4)*r.^2).*C(4);
 
-set(gcf,'renderer','painters','PaperPosition',[0 0 12 8]);
+set(gcf,'renderer','painters','PaperPosition',[0 0 12 6]);
 plot(x, Psi(x)/Psi(x(1)), 'LineWidth', 1)
 hold on
 
@@ -22,9 +22,6 @@ title('Ground state wave function in helium','Interpreter','latex', 'fontsize', 
 set(y, 'Units', 'Normalized', 'Position', [-0.09, 0.5, 0]);
 set(X, 'Units', 'Normalized', 'Position', [0.5, -0.065, 0]);
 
-%l = legend('Analytic wave function $\Psi(r)/\Psi(0)$','Wave function, Task 3 $\Psi_3(r)/\Psi_3(0)$');
-%set(l,'Interpreter','latex')
-
 print(gcf,'-depsc2','task1.eps')
 
 %% Task 2: Plot the Hartree potentials
@@ -34,7 +31,7 @@ clc
 
 load Task2.mat
 
-set(gcf,'renderer','painters','PaperPosition',[0 0 12 8]);
+set(gcf,'renderer','painters','PaperPosition',[0 0 12 6]);
 
 V = @(r) 1./r - (1 + 1./r) .* exp(-2.*r);
 Vsh = Y(2:end)'./x(2:end) + 1/rMax;
@@ -63,7 +60,7 @@ clc
 
 load Task3.mat 
 
-set(gcf,'renderer','painters','PaperPosition',[0 0 12 8]);
+set(gcf,'renderer','painters','PaperPosition',[0 0 12 6]);
 plot(x, Psi(x)/Psi(x(1)), 'LineWidth', 1)
 hold on
 plot( x(2:10:end), waveFuncTask3(2:10:end)/waveFuncTask3(2),'--', 'color', 'red', 'LineWidth', 1)
@@ -88,7 +85,7 @@ clc
 
 load Task4rMax.mat
 
-set(gcf,'renderer','painters','PaperUnits','centimeters','PaperPosition',[0 0 12 8]);
+set(gcf,'renderer','painters','PaperUnits','centimeters','PaperPosition',[0 0 12 6]);
 
 plot(RMax,Energy/27.211396132,'r-', 'LineWidth', 1);
 axis([0 20 -2.3 .5])
@@ -109,7 +106,7 @@ clc
 
 load Task4GP.mat
 
-set(gcf,'renderer','painters','PaperPosition',[0 0 12 8]);
+set(gcf,'renderer','painters','PaperPosition',[0 0 12 6]);
 
 plot(gridSize,Energy,'r-', 'LineWidth', 1);
 %axis([0 4000 -55 -15]);
@@ -134,7 +131,7 @@ load Task4.mat
 
 psi = psi_r./x;
 
-set(gcf,'renderer','painters','PaperPosition',[0 0 12 8]);
+set(gcf,'renderer','painters','PaperPosition',[0 0 12 6]);
 
 plot(x(2:end),psi(2:end)/psi(2), 'LineWidth', 1)
 hold on
@@ -163,7 +160,7 @@ clc
 load Task4.mat
 load Task5.mat
 
-set(gcf,'renderer','painters','PaperPosition',[0 0 12 8]);
+set(gcf,'renderer','painters','PaperPosition',[0 0 12 6]);
 
 psi = psi_r./x;
 
@@ -196,7 +193,7 @@ load Task4.mat
 load Task5.mat
 load Task6.mat
 
-set(gcf,'renderer','painters','PaperPosition',[0 0 12 8]);
+set(gcf,'renderer','painters','PaperPosition',[0 0 12 6]);
 
 psi = psi_r./x;
 

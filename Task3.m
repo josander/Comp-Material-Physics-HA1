@@ -40,7 +40,7 @@ Energy = 27.211396132*minEig
 % Analytic wave function for ground state hydrogen
 Psi = @(r) 2/(a0^(3/2))*exp(-r/a0);
 
+% Save wavefunction
 waveFuncTask3 = abs(A(:,index)/sqrt(h))./x';
 
 save Task3.mat
-
