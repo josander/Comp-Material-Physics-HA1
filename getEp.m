@@ -34,8 +34,7 @@ if c == 1
 end
 
 % Calculate epsilon
-%Ep(2:m-1) = -(3/4)*(3*abs(psi_r(2:end-1)).^2/pi).^(1/3) + e_c;
-Ep(2:m-1) = -(3/4)*(3*abs(psi_r(2:end-1)).^2/pi).^(1/3) + e_c;
+Ep(2:m-1) = -(3/4)*(3*2*abs(psi_r(2:end-1)).^2/pi).^(1/3) + e_c;
 
 Ep(m) = 0;
 
