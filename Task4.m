@@ -4,7 +4,7 @@ clear all
 clc
 
 rMaxInit = 2;
-rMaxFinal = 15;
+rMaxFinal = 12;
 dr = 0.5;
 
 h = 0.005;
@@ -106,7 +106,7 @@ clc
 clear all
 
 nPointsInit = 101;
-nPointsFinal = 4501;
+nPointsFinal = 3001;
 dn = 50;
 
 
@@ -114,7 +114,7 @@ dn = 50;
 for N = nPointsInit:dn:nPointsFinal
     
     % Cutoff radius
-    rMax = 15;
+    rMax = 6;
 
     % Radial, discetizised points 
     x = linspace(10^(-9),rMax, N);

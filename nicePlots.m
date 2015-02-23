@@ -142,7 +142,7 @@ X = xlabel('Distance from the nucleus r [$a_0$]','Interpreter','latex', 'fontsiz
 y = ylabel('Normalised wave function [-]','Interpreter','latex', 'fontsize', 12);    
 
 plotTickLatex2D
-title('Wave function for Helium','Interpreter','latex', 'fontsize', 14);
+title('Wave function for helium','Interpreter','latex', 'fontsize', 14);
 set(y, 'Units', 'Normalized', 'Position', [-0.09, 0.5, 0]);
 set(X, 'Units', 'Normalized', 'Position', [0.5, -0.05, 0]);
 
@@ -175,7 +175,7 @@ X = xlabel('Distance from the nucleus r [$a_0$]','Interpreter','latex', 'fontsiz
 y = ylabel('Normalised wave function [-]','Interpreter','latex', 'fontsize', 12);    
 
 plotTickLatex2D
-title('Wave function for Helium','Interpreter','latex', 'fontsize', 14);
+title('Wave function for helium','Interpreter','latex', 'fontsize', 14);
 set(y, 'Units', 'Normalized', 'Position', [-0.09, 0.5, 0]);
 set(X, 'Units', 'Normalized', 'Position', [0.5, -0.05, 0]);
 
@@ -209,9 +209,9 @@ axis([0 5 0 1]);
 plotTickLatex2D
 
 X = xlabel('Distance from the nucleus r [$a_0$]','Interpreter','latex', 'fontsize', 12);
-y = ylabel('Normalised wave function [-]','Interpreter','latex', 'fontsize', 12);    
+y = ylabel('Normalised wave function [-]','Interpreter','latex', 'fontsize', 12);   
 
-title('Electron potential in hydrogen','Interpreter','latex', 'fontsize', 14);
+title('Wave function for helium','Interpreter','latex', 'fontsize', 14);
 set(y, 'Units', 'Normalized', 'Position', [-0.09, 0.5, 0]);
 set(X, 'Units', 'Normalized', 'Position', [0.5, -0.05, 0]);
 
