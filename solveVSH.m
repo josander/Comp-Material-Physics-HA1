@@ -30,11 +30,11 @@ A(end, end -1) = 0;
 % Get B matrix
 B = -u.^2./r;
 
-% Solve system Au = B
-u = A\B';
+% Solve system Ax = B
+x = A\B';
 
 % Translate into the single Hartree potential
-VSH = u'./r + 1/rMax;
+VSH = x'./r + 1/rMax;
 
 plot(VSH,'r');
 hold off

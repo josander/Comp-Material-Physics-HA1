@@ -1,10 +1,12 @@
-function [ VEx ] = solveVEx( u )
+function [ VEx ] = solveVEx(r, u  )
 %SOLVEEX Summary of this function goes here
-%   psi_r : Normalised wavefunction for heilum
+%   u : Normalised eigenfunction for heilum
 %   VEx = ex +n *ex'
 %   ex = - 3/4 * (3n/pi)^(1/3)
 
-VEx = - (6*abs(u).^2/pi).^(1/3);
+phi_r = u./(r.*sqrt(4*pi));
+
+VEx = - (6*abs(phi_r).^2/pi).^(1/3);
 
 end
 

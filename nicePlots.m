@@ -104,19 +104,20 @@ print(gcf,'-depsc2','convRMax.eps')
 clf
 clc
 
-load Task4GP.mat
+load Task4gridPoints.mat
 
 set(gcf,'renderer','painters','PaperPosition',[0 0 12 7]);
 
 plot(gridSize,Energy,'r-', 'LineWidth', 1);
+axis([0 3000 -78 -77])
 plotTickLatex2D
 
 X = xlabel('Grid points  N [-]','Interpreter','latex', 'fontsize', 12);
 y = ylabel('Ground state energy [$eV$]','Interpreter','latex', 'fontsize', 12);    
 
 title('Convergence with respect to number of grid points','Interpreter','latex', 'fontsize', 14);
-set(y, 'Units', 'Normalized', 'Position', [-0.09, 0.5, 0]);
-set(X, 'Units', 'Normalized', 'Position', [0.5, -0.05, 0]);
+set(y, 'Units', 'Normalized', 'Position', [-0.12, 0.5, 0]);
+set(X, 'Units', 'Normalized', 'Position', [0.5, -0.06, 0]);
 
 
 print(gcf,'-depsc2','convGrid.eps')
@@ -124,7 +125,7 @@ print(gcf,'-depsc2','convGrid.eps')
 %% Task 4: Plot the wave functions
 
 clf
-clc
+
 
 load Task4.mat
 

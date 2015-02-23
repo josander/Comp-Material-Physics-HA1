@@ -4,10 +4,10 @@ clc
 clear all
 
 % Cutoff radius
-rMax = 15;
+rMax = 6;
 
 % Number of points
-N = 4001; 
+N = 1501; 
 
 % Radial, discetizised points 
 x = linspace(10^(-9),rMax, N);
@@ -43,7 +43,7 @@ while energyDiff > 10^(-5) % [eV]
     Vsh = solveVSH(x, u);
     
     % Get the exchange potential
-    Vx = solveVEx(u);
+    Vx = solveVEx(x,u);
     
     % Define the potential
     pot = -2./x+2*Vsh+Vx;
@@ -78,14 +78,20 @@ while energyDiff > 10^(-5) % [eV]
 
 end
 
-% Print value of lowest eigenvalue
+%Print value of lowest eigenvalue
 minEig = minEig
 
 % Get eigenvalue of exchange function
-epsilonX = getEp(u, 0);
+epsilonX = getEp(x, u, 0);
+
+% Get the single Hartree potential
+Vsh = solveVSH(x, u);
+    
+% Get the exchange potential
+Vx = solveVEx(x,u);
 
 % Get ground state energy in Hartree
-Energy0 = 2 * minEig - 2 * trapz(x, u.^2.*(Vsh + Vx - epsilonX))
+Energy0 = 2 * minEig - 2* trapz(x, u.^2.*(Vsh + Vx - epsilonX))
 
 % Energy in eV
 EnergyEV = Energy0*27.211396132
