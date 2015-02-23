@@ -1,8 +1,8 @@
-function [ VSH ] = solveVSH( r, psi_r )
+function [ VSH ] = solveVSH( r, u )
 %SOLVEVHS Summary of this function goes here
 %   r : radial grid with N ponits from [0,rMax]
-%   psi_r : radial wavefunction over r, normalized
-%           according to 4*pi*int(r^2psi_r^2 dr) = 1
+%   u : radial wavefunction over r, normalized
+%           according to int(u^2 dr) = 1
 
 [M N] = size(r);
 A = zeros(N,N);
@@ -28,7 +28,7 @@ A(end,end) = 1;
 A(end, end -1) = 0;
 
 % Get B matrix
-B = -4*pi*r.*psi_r.^2;
+B = -u.^2./r;
 
 % Solve system Au = B
 u = A\B';
