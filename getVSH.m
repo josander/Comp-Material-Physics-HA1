@@ -3,7 +3,6 @@ function [ VSH ] = getVSH( N, rMax, nRelax, psi)
 x = linspace(rMax/N,rMax, N);
 Y = zeros(1,N+2);
 u_sq = zeros(1,N); 
-
 h = rMax/(N);
 
 psi = psi/sqrt(trapz(4*pi.*x.^2.*psi.^2));

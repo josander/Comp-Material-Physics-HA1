@@ -83,7 +83,7 @@ print(gcf,'-depsc2','task3.eps')
 clf
 clc
 
-load Task4rMax2.mat
+load Task4rMax.mat
 
 set(gcf,'renderer','painters','PaperUnits','centimeters','PaperPosition',[0 0 12 7]);
 
