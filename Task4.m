@@ -81,6 +81,9 @@ for rMax = rMaxInit:dr:rMaxFinal
 
     end
     
+    % Get the final single Hartree potential
+    Vsh = solveVSH(x, u);
+    
     % Get ground state energy in Hartree
     Energy0 = 2*minEig - 2*trapz(x,u.^2.*Vsh/2);
 
@@ -95,7 +98,7 @@ for rMax = rMaxInit:dr:rMaxFinal
     
 end
 
-save Task4rMax2.mat
+save Task4rMax.mat
 
 %% ------ Find grid point convergence ------
 
@@ -179,6 +182,9 @@ for N = nPointsInit:dn:nPointsFinal
 
     end
 
+    % Get the final single Hartree potential
+    Vsh = solveVSH(x, u);
+    
     % Get ground state energy in Hartree
     Energy0 = 2*minEig - 2*trapz(x,u.^2.*Vsh/2);
 
@@ -274,6 +280,9 @@ end
 
 % Print value of lowest eigenvalue
 minEig
+
+% Get the final single Hartree potential
+Vsh = solveVSH(x, u);
 
 % Get ground state energy in Hartree
 Energy0 = 2*minEig - 2*trapz(x,u.^2.*Vsh/2)

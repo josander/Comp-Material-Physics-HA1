@@ -36,9 +36,5 @@ x = A\B';
 % Translate into the single Hartree potential
 VSH = x'./r + 1/rMax;
 
-plot(VSH,'r');
-hold off
-
-
 end
 

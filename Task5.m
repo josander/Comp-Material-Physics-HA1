@@ -7,7 +7,7 @@ clear all
 rMax = 6;
 
 % Number of points
-N = 1501; 
+N = 1001; 
 
 % Radial, discetizised points 
 x = linspace(10^(-9),rMax, N);
