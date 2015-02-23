@@ -7,7 +7,7 @@ clear all
 rMax = 6;
 
 % Number of points
-N = 1001; 
+N = 1501; 
 
 % Radial, discetizised points 
 x = linspace(10^(-9),rMax, N);
@@ -100,4 +100,3 @@ EnergyEV = Energy0*27.211396132
 waveFuncTask5 = A(:,index)'./x;
 
 save Task5.mat
-
