@@ -43,7 +43,7 @@ while energyDiff > 10^(-5) % [eV]
     Vsh = solveVSH(x, u);
     
     % Get the exchange potential
-    Vx = solveVEx(u);
+    Vx = solveVEx(x,u);
     
     % Get the correlation potential
     Vc = solveVC(u);
