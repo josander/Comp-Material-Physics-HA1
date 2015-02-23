@@ -6,7 +6,7 @@ function [ VEx ] = solveVEx(r, u  )
 
 phi_r = u./(r.*sqrt(4*pi));
 
-VEx = - (6*abs(phi_r).^2/pi).^(1/3);
+VEx = - (3*abs(phi_r).^2/pi).^(1/3);
 
 end
 
