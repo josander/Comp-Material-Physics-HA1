@@ -1,4 +1,4 @@
-function [ VC ] = solveVC( psi_r )
+function [ VC ] = solveVC( r, u )
 %SOLVEVC Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -11,10 +11,11 @@ gamma = -0.1423;
 beta1 = 1.0529;
 beta2 = 0.3334;
 
+psi_r = u./(r.*sqrt(4*pi)); 
 
 [n m] = size(psi_r);
 
-r_s = (3./(4*pi*2*abs(psi_r).^2)).^(1/3);
+r_s = (3./(4*pi*abs(psi_r).^2)).^(1/3);
 e_c = zeros(1,m-2); 
 de_c = zeros(1,m-2);
 

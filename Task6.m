@@ -46,7 +46,7 @@ while energyDiff > 10^(-5) % [eV]
     Vx = solveVEx(x,u);
     
     % Get the correlation potential
-    Vc = solveVC(u);
+    Vc = solveVC(x,u);
     
     % Define the potential
     pot = -2./x+2*Vsh+Vx+Vc;
@@ -94,7 +94,7 @@ Vsh = solveVSH(x, u);
 Vx = solveVEx(x,u);
     
 % Get the correlation potential
-Vc = solveVC(u);
+Vc = solveVC(x, u);
 
 % Get ground state energy in Hartree
 Energy0 = 2 * minEig - 2 * trapz(x,u.^2.*(Vsh + Vx+ Vc - epsilonXC))
