@@ -8,7 +8,7 @@ function [A B] = solveKS(pot, x)
 Y = zeros(N,N);
 
 % Get the length between two points
-h = x(2) - x(1);
+h = x(3) - x(2);
 
 % Construct a, b and c
 for i = 1:N

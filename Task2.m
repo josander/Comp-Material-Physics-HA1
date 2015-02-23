@@ -15,7 +15,6 @@ x = linspace(0,rMax, N);
 
 % Initialise an array with zeros
 Y = zeros(N,1);
-Ynew = zeros(N,1);
 
 % The step length between two points
 h = rMax/(N-1);

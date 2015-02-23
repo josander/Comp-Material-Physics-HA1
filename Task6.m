@@ -118,7 +118,7 @@ plot(x(2:end), waveFuncTask4(2:end)./waveFuncTask4(2),'r--', 'LineWidth', 1);
 hold on
 plot(x(2:end), waveFuncTask5(2:end)./waveFuncTask5(2),'g-.', 'LineWidth', 1);
 hold on
-plot(x(2:end), waveFuncTask6(2:end)./waveFuncTask6(2),'m--', 'LineWidth', 1);
+plot(x(2:end), waveFuncTask6(2:end)./waveFuncTask6(2),'m:', 'LineWidth', 1);
 axis([0 5 0 1]);
 
 plotTickLatex2D

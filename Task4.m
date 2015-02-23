@@ -31,7 +31,6 @@ for rMax = rMaxInit:dr:rMaxFinal
     % Normalise psi_r : 4pi int(r^2U0^2) = 1  
     psi_r = psi_r/sqrt(trapz(4*pi.*x.^2.*psi_r.^2));
 
-
     % Length between two points
     h = rMax/(N-1);
 
@@ -80,7 +79,7 @@ for rMax = rMaxInit:dr:rMaxFinal
     end
 
     % Save energy and rMax
-    Energy((rMax-rMaxInit)/dr+1) = E;
+    Eigen((rMax-rMaxInit)/dr+1) = minEig;
     RMax((rMax-rMaxInit)/dr+1) = rMax; 
     
     rMax
@@ -95,10 +94,10 @@ clc
 
 set(gcf,'renderer','painters','PaperUnits','centimeters','PaperPosition',[0 0 12 8]);
 
-plot(RMax,Energy,'-', 'MarkerSize', 12, 'Color', 'red');
+plot(RMax,Eigen,'r-', 'LineWidth', 1);
 axis([2 20 -55 -35])
-X = xlabel('Cut-off radius $r_{max}$ [$a_0$]','Interpreter','latex', 'fontsize', 12);
-y = ylabel('Ground state energy [eV]','Interpreter','latex', 'fontsize', 12);    
+X = xlabel('Cutoff radius $r_{max}$ [$a_0$]','Interpreter','latex', 'fontsize', 12);
+y = ylabel('Eigenvalue [$E_h$]','Interpreter','latex', 'fontsize', 12);    
 title('Ground state energy for Helium','Interpreter','latex', 'fontsize', 14);
 plotTickLatex2D
 set(y, 'Units', 'Normalized', 'Position', [-0.1, 0.5, 0]);
@@ -180,7 +179,7 @@ for N = nPointsInit:dn:nPointsFinal
         minEig = e(index);
 
         % Get energy in eV
-        E = 27.211396132*minEig;
+        %E = 27.211396132*minEig;
 
         % Calculate the new energy difference
         energyDiff = abs(Eold - E);
@@ -191,7 +190,7 @@ for N = nPointsInit:dn:nPointsFinal
     end
    
 
-    Energy((N-nPointsInit)/dn+1) = E;
+    Eigen((N-nPointsInit)/dn+1) = minEig;
     gridSize((N-nPointsInit)/dn+1) = N;
     
     N
@@ -207,12 +206,12 @@ clc
 
 set(gcf,'renderer','painters','PaperPosition',[0 0 12 8]);
 
-plot(gridSize,Energy,'-', 'Color', 'red', 'LineWidth', 1);
+plot(gridSize,Eigen,'-', 'Color', 'red', 'LineWidth', 1);
 axis([0 4000 -55 -15]);
 plotTickLatex2D
 
 X = xlabel('Grid points  N [-]','Interpreter','latex', 'fontsize', 12);
-y = ylabel('Energy [eV]','Interpreter','latex', 'fontsize', 12);    
+y = ylabel('Eigenvalue [$E_h$]','Interpreter','latex', 'fontsize', 12);    
 
 title('Ground state energy for Helium','Interpreter','latex', 'fontsize', 14);
 set(y, 'Units', 'Normalized', 'Position', [-0.09, 0.5, 0]);
@@ -227,7 +226,7 @@ clc
 clear all
 
 % Cutoff radius
-rMax = 10;
+rMax = 15;
 
 % Number of points
 N = 1001; 
@@ -247,6 +246,7 @@ psi_r = (exp(-alpha(1)*x.^2).*C(1) + exp(-alpha(2)*x.^2).*C(2) + ...
 
 % Normalise U0 4pi int(r^2U0^2) = 1  
 psi_r = psi_r/sqrt(trapz(4*pi.*x.^2.*psi_r.^2));
+
 
 % Length between two points
 h = rMax/(N-1);
@@ -279,10 +279,10 @@ while energyDiff > 10^(-5) % [eV]
     psi_r = A(:,index)';
     
     % Normalise psi_r : 4pi int(r^2U0^2) = 1  
-    psi_r = psi_r/sqrt(trapz(4*pi.*x.^2.*psi_r.^2));
+    psi_r = psi_r/sqrt(trapz(4*pi.*x.^2.*abs(psi_r).^2));
 
     % Get the minimal eigenvalue in Hartree energy
-    minEig = e(index);
+    minEig = e(index)/4;
 
     % Get energy in eV
     E = 27.211396132*minEig;
@@ -298,11 +298,14 @@ end
 % Get the function u
 u = sqrt(4*pi)*x.*psi_r;
 
+% Print value of lowest eigenvalue
+minEig = minEig
+
 % Get ground state energy in Hartree
-Energy0 = 2*minEig - 2*trapz(u.^2.*Vsh)
+Energy0 = 2*minEig - 2*trapz(u.^2.*Vsh/2)
 
 % Energy in eV
-EnergyEV = Energy0*27.211396132
+EnergyEV = E
 
 % Get wave function
 waveFuncTask4 = A(:,index)'./x;
