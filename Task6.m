@@ -4,10 +4,10 @@ clc
 clear all
 
 % Cutoff radius
-rMax = 10;
+rMax = 15;
 
 % Number of points
-N = 1001; 
+N = 4001; 
 
 % Radial, discetizised points 
 x = linspace(10^(-9),rMax, N);
@@ -22,8 +22,11 @@ alpha = [0.297104, 1.236745, 5.749982, 38.216677];
 psi_r = (exp(-alpha(1)*x.^2).*C(1) + exp(-alpha(2)*x.^2).*C(2) + ...
     exp(-alpha(3)*x.^2).*C(3)+ exp(-alpha(4)*x.^2).*C(4)).*x;
 
-% Normalise psi_r : 4pi int(r^2U0^2) = 1  
-psi_r = psi_r/sqrt(trapz(4*pi.*x.^2.*psi_r.^2));
+% Get u from psi_r
+u = sqrt(4*pi)*x.*psi_r;
+
+% Normalise u
+u = u/sqrt(trapz(x,u.^2));
 
 % Length between two points
 h = rMax/(N-1);
@@ -37,13 +40,13 @@ Eold = 0;
 while energyDiff > 10^(-5) % [eV]
 
     % Get the single Hartree potential
-    Vsh = solveVSH(x, psi_r);
+    Vsh = solveVSH(x, u);
     
     % Get the exchange potential
-    Vx = solveVEx(psi_r);
+    Vx = solveVEx(u);
     
     % Get the correlation potential
-    Vc = solveVC(psi_r);
+    Vc = solveVC(u);
     
     % Define the potential
     pot = -2./x+2*Vsh+Vx+Vc;
@@ -59,10 +62,10 @@ while energyDiff > 10^(-5) % [eV]
     index = min(find(e == min(e)));
     
     % The new radial wave function
-    psi_r = A(:,index)';
+    u = A(:,index)';
     
-    % Normalise psi_r : 4pi int(r^2U0^2) = 1  
-    psi_r = psi_r/sqrt(trapz(4*pi.*x.^2.*psi_r.^2));
+    % Normalise
+    u = u/sqrt(trapz(x,u.^2));
 
     % Get the minimal eigenvalue in Hartree energy
     minEig = e(index);
@@ -78,17 +81,14 @@ while energyDiff > 10^(-5) % [eV]
 
 end
 
-% Get exchange-correlation potential
-Vxc = Vx + Vc;
-
-% Get the function u
-u = sqrt(4*pi)*x.*psi_r;
+% Print value of lowest eigenvalue
+minEig = minEig
 
 % Get eigenvalue of exchange-correlation function
-epsilonXC = getEp(psi_r, 1)
+epsilonXC = getEp(u, 1)
 
 % Get ground state energy in Hartree
-Energy0 = 2 * minEig - 2 * trapz(u.^2.*(Vsh + Vxc - epsilonXC))
+Energy0 = 2 * minEig - 2 * trapz(x,u.^2.*(Vsh + Vxc - epsilonXC))
 
 % Energy in eV
 EnergyEV = Energy0*27.211396132
@@ -98,39 +98,3 @@ waveFuncTask6 = A(:,index)'./x;
 
 % Save all variables
 save Task6.mat
-
-%% Plot the wave functions
-
-clf
-clc
-
-load Task4.mat
-load Task5.mat
-load Task6.mat
-
-set(gcf,'renderer','painters','PaperPosition',[0 0 12 8]);
-
-psi = psi_r./x;
-
-plot(x(2:end),psi(2:end)./psi(2),'-', 'LineWidth', 1)
-hold on
-plot(x(2:end), waveFuncTask4(2:end)./waveFuncTask4(2),'r--', 'LineWidth', 1);
-hold on
-plot(x(2:end), waveFuncTask5(2:end)./waveFuncTask5(2),'g-.', 'LineWidth', 1);
-hold on
-plot(x(2:end), waveFuncTask6(2:end)./waveFuncTask6(2),'m:', 'LineWidth', 1);
-axis([0 5 0 1]);
-
-plotTickLatex2D
-
-X = xlabel('Distance from the nucleus r [$a_0$]','Interpreter','latex', 'fontsize', 12);
-y = ylabel('Normalised wave function [-]','Interpreter','latex', 'fontsize', 12);    
-
-title('Electron potential in hydrogen','Interpreter','latex', 'fontsize', 14);
-set(y, 'Units', 'Normalized', 'Position', [-0.09, 0.5, 0]);
-set(X, 'Units', 'Normalized', 'Position', [0.5, -0.065, 0]);
-
-l = legend('Wave function, Task 1 $\Psi_1(r)/\Psi_1(0)$','Wave function, Task 4 $\Psi_4(r)/\Psi_4(0)$','Wave function, Task 5 $\Psi_5(r)/\Psi_5(0)$','Wave function, Task 6 $\Psi_6(r)/\Psi_6(0)$');
-set(l,'Interpreter','latex')
-
-print(gcf,'-depsc2','task6.eps')

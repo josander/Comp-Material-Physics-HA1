@@ -44,26 +44,3 @@ waveFuncTask3 = abs(A(:,index)/sqrt(h))./x';
 
 save Task3.mat
 
-%% Plot the gound state wave function
-
-clf
-clc
-set(gcf,'renderer','painters','PaperPosition',[0 0 12 8]);
-plot(x, Psi(x)/Psi(x(1)), 'LineWidth', 1)
-hold on
-plot( x(2:10:end), waveFuncTask3(2:10:end)/waveFuncTask3(2),'--', 'color', 'red', 'LineWidth', 1)
-axis([0 10 0 1]);
-
-plotTickLatex2D
-
-X = xlabel('Distance from the nucleus r [$a_0$]','Interpreter','latex', 'fontsize', 12);
-y = ylabel('Normalised wave functions [-]','Interpreter','latex', 'fontsize', 12);    
-title('Ground state wave function in hydrogen','Interpreter','latex', 'fontsize', 14);
-set(y, 'Units', 'Normalized', 'Position', [-0.09, 0.5, 0]);
-set(X, 'Units', 'Normalized', 'Position', [0.5, -0.065, 0]);
-
-l = legend('Analytic wave function $\Psi(r)/\Psi(0)$','Wave function, Task 3 $\Psi_3(r)/\Psi_3(0)$');
-set(l,'Interpreter','latex')
-
-print(gcf,'-depsc2','task3.eps')
-

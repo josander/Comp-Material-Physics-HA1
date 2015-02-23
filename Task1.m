@@ -75,14 +75,3 @@ disp('Coefficients in wave func:')
 C
 
 save Task1.mat
-
-%% Plot the found wave function
-
-x = linspace(0,5,1000);
-phi = @(r) exp(-alpha(1)*r.^2).*C(1) + exp(-alpha(2)*r.^2).*C(2) + ...
-    exp(-alpha(3)*r.^2).*C(3)+ exp(-alpha(4)*r.^2).*C(4);
-
-plot(x,abs(phi(x)))
-
-xlabel('Radial distance r');
-ylabel('The wave function');
