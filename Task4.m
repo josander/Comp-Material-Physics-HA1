@@ -229,7 +229,7 @@ clear all
 rMax = 15;
 
 % Number of points
-N = 1001; 
+N = 2001; 
 
 % Radial, discetizised points 
 x = linspace(10^(-9),rMax, N);
@@ -282,7 +282,7 @@ while energyDiff > 10^(-5) % [eV]
     psi_r = psi_r/sqrt(trapz(4*pi.*x.^2.*abs(psi_r).^2));
 
     % Get the minimal eigenvalue in Hartree energy
-    minEig = e(index)/4;
+    minEig = e(index);%
 
     % Get energy in eV
     E = 27.211396132*minEig;
