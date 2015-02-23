@@ -250,7 +250,7 @@ psi_r = (exp(-alpha(1)*x.^2).*C(1) + exp(-alpha(2)*x.^2).*C(2) + ...
 u = sqrt(4*pi)*x.*psi_r;
 
 % Normalise u
-u = u/sqrt(trapz(u.^2));
+u = u/sqrt(trapz(x,u.^2));
 
 % Length between two points
 h = rMax/(N-1);
@@ -283,7 +283,7 @@ while energyDiff > 10^(-5) % [eV]
     u = A(:,index)';
     
     % Normalise
-    u = u/sqrt(trapz(u.^2));
+    u = u/sqrt(trapz(x,u.^2));
 
     % Get the minimal eigenvalue in Hartree energy
     minEig = e(index);
@@ -303,10 +303,10 @@ end
 minEig = minEig
 
 % Get ground state energy in Hartree
-Energy0 = 2*minEig - 2*trapz(u.^2.*Vsh/2)
+Energy0 = 2*minEig - 2*trapz(x,u.^2.*Vsh/2)
 
 % Energy in eV
-EnergyEV = E
+EnergyEV = Energy0*27.211396132
 
 % Get wave function
 waveFuncTask4 = A(:,index)'./x;
