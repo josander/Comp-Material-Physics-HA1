@@ -85,10 +85,19 @@ end
 minEig = minEig
 
 % Get eigenvalue of exchange-correlation function
-epsilonXC = getEp(u, 1)
+epsilonXC = getEp(x, u, 1);
+
+% Get the single Hartree potential
+Vsh = solveVSH(x, u);
+    
+% Get the exchange potential
+Vx = solveVEx(x,u);
+    
+% Get the correlation potential
+Vc = solveVC(u);
 
 % Get ground state energy in Hartree
-Energy0 = 2 * minEig - 2 * trapz(x,u.^2.*(Vsh + Vxc - epsilonXC))
+Energy0 = 2 * minEig - 2 * trapz(x,u.^2.*(Vsh + Vx+ Vc - epsilonXC))
 
 % Energy in eV
 EnergyEV = Energy0*27.211396132
